@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finance Forward</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a financial aid award letter, marked up with a highlighter.
+   Deep spruce ink on cool paper; one highlighter-yellow accent; mono for every dollar figure. */
+:root{
+  --paper:#f4f6f1;
+  --surface:#ffffff;
+  --ink:#10302f;
+  --ink-soft:#4a6361;
+  --line:#d5ddd6;
+  --brand:#0f4a47;
+  --on-brand:#f4f6f1;
+  --marker:#ffe04a;
+  --on-marker:#10302f;
+  --flag:#b8402a;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0c1f1f;--surface:#132c2b;--ink:#e9efe8;--ink-soft:#a3b8b3;--line:#27423f;
+    --brand:#1b5a55;--on-brand:#f4f6f1;--marker:#ffe04a;--on-marker:#10302f;--flag:#f08a70;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0c1f1f;--surface:#132c2b;--ink:#e9efe8;--ink-soft:#a3b8b3;--line:#27423f;
+  --brand:#1b5a55;--on-brand:#f4f6f1;--marker:#ffe04a;--on-marker:#10302f;--flag:#f08a70;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--marker);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800}
+h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:700}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0;max-width:65ch}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.hl{background:linear-gradient(transparent 12%,var(--marker) 12%,var(--marker) 88%,transparent 88%);color:var(--on-marker);padding:0 .12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.lead{font-size:1.18rem;color:var(--ink-soft)}
+.filler{color:var(--ink-soft)}
+
+/* header */
+header{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.2rem;text-decoration:none}
+.logo span.mark{background:var(--marker);color:var(--on-marker);font-family:var(--mono);font-weight:600;font-size:.95rem;padding:2px 7px;border-radius:3px}
+nav{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+nav a{text-decoration:none;font-weight:600;font-size:.95rem;padding:7px 11px;border-radius:6px}
+nav a:hover{background:var(--line)}
+nav a[aria-current="page"]{box-shadow:inset 0 -3px 0 var(--marker)}
+.btn{display:inline-block;background:var(--brand);color:var(--on-brand);font-weight:700;text-decoration:none;padding:12px 20px;border-radius:8px;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn:hover{filter:brightness(1.12)}
+.btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+nav a.btn{padding:8px 14px;color:var(--on-brand)}
+nav a.btn:hover{background:var(--brand)}
+
+/* pages */
+.page{display:none}
+.page.active{display:block}
+section{padding:64px 0}
+section.tight{padding:40px 0}
+.stack{display:flex;flex-direction:column;gap:20px}
+.pagehead{padding:56px 0 8px}
+.pagehead .stack{gap:14px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:56px 0 64px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.letter{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:26px 24px;font-family:var(--mono);font-size:.88rem;box-shadow:8px 8px 0 var(--brand);transform:rotate(1.2deg);position:relative}
+.letter h4{margin:0 0 4px;font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.letter .ttl{font-weight:600;font-size:1rem;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-variant-numeric:tabular-nums}
+.row.total{border-bottom:0;border-top:2px solid var(--ink);margin-top:6px;font-weight:600}
+.note{display:block;font-family:var(--body);font-size:.8rem;font-weight:600;color:var(--flag);margin-top:2px}
+.strike{text-decoration:line-through;text-decoration-color:var(--flag);text-decoration-thickness:2px}
+.real{margin-top:12px;display:flex;justify-content:space-between;gap:12px;font-weight:600;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:no-preference){
+  .letter .hl{background-size:0 100%;background-repeat:no-repeat;animation:mark .7s .5s ease-out forwards}
+  .letter .real .hl{animation-delay:1.3s}
+  @keyframes mark{to{background-size:100% 100%}}
+}
+
+/* blocks */
+.band{background:var(--brand);color:var(--on-brand)}
+.band .eyebrow,.band .filler{color:var(--on-brand);opacity:.8}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.stat b{display:block;font-family:var(--mono);font-size:2.2rem;font-weight:600;color:var(--marker);font-variant-numeric:tabular-nums}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.card p{font-size:.97rem}
+.card .more{margin-top:auto;font-weight:700;padding-top:6px}
+.num{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.quote{font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);font-weight:500;line-height:1.25;border-left:6px solid var(--marker);padding-left:20px;max-width:28ch}
+.prose{display:flex;flex-direction:column;gap:18px}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.timeline li{display:grid;grid-template-columns:90px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--line)}
+.timeline .yr{font-family:var(--mono);font-weight:600}
+.avatar{width:72px;height:72px;border-radius:50%;background:var(--brand);color:var(--marker);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.4rem}
+.role{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
+.path{display:grid;grid-template-columns:150px 1fr auto;gap:28px;align-items:start;padding:30px 0;border-top:2px solid var(--ink)}
+.path ul{margin:10px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:.97rem}
+.path .who{font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em}
+.logo-tile{background:var(--surface);border:1px dashed var(--ink-soft);border-radius:10px;min-height:110px;display:grid;place-items:center;font-family:var(--mono);font-size:.85rem;color:var(--ink-soft);text-align:center;padding:12px}
+.map{background:var(--surface);border:1px dashed var(--ink-soft);border-radius:10px;min-height:260px;display:grid;place-items:center;font-family:var(--mono);font-size:.85rem;color:var(--ink-soft);text-align:center;padding:16px;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:36px 36px}
+.map span{background:var(--marker);color:var(--on-marker);padding:4px 10px;border-radius:4px;font-weight:600}
+dl{margin:0;display:grid;grid-template-columns:110px 1fr;gap:10px 16px}
+dt{font-family:var(--mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding-top:3px}
+dd{margin:0}
+form{display:flex;flex-direction:column;gap:14px}
+label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.92rem}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--ink-soft);border-radius:8px;padding:11px 12px}
+textarea{min-height:120px;resize:vertical}
+.formmsg{font-size:.92rem;font-weight:600;color:var(--flag);min-height:1.4em}
+.cta-band{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.cta-band .btn{background:var(--marker);color:var(--on-marker)}
+
+footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:var(--ink-soft)}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+.foot a{display:block;text-decoration:none;padding:2px 0}
+.foot a:hover{text-decoration:underline}
+.foot strong{color:var(--ink);font-family:var(--display)}
+
+@media (max-width:860px){
+  .hero,.split{grid-template-columns:1fr;gap:36px}
+  .grid3,.grid4{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .path{grid-template-columns:1fr;gap:10px}
+  .foot{grid-template-columns:1fr}
+  .letter{transform:none}
+}
+@media (max-width:520px){
+  .grid2,.grid3,.grid4{grid-template-columns:1fr}
+  .timeline li{grid-template-columns:1fr;gap:4px}
+  dl{grid-template-columns:1fr;gap:2px 0}
+  dd{margin-bottom:10px}
+  section{padding:44px 0}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#home"><span class="mark">FF→</span> Finance Forward</a>
+    <nav aria-label="Main">
+      <a href="#home">Home</a>
+      <a href="#story">Our Story</a>
+      <a href="#team">Team</a>
+      <a href="#pathways">Pathways</a>
+      <a href="#partners">Partners</a>
+      <a href="#contact">Contact</a>
+      <a class="btn" href="#pathways">Get involved</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<div class="page" id="home">
+  <div class="wrap hero">
+    <div class="stack">
+      <span class="eyebrow">For first-generation college students</span>
+      <h1>Know what college <span class="hl">really costs</span> before you say yes.</h1>
+      <p class="lead">We teach first-generation students and their families how to read a financial aid offer, compare schools on real cost, and borrow only what makes sense. Every workshop is free.</p>
+      <div class="cta">
+        <a class="btn" href="#pathways">Find your pathway</a>
+        <a class="btn alt" href="#story">Read our story</a>
+      </div>
+    </div>
+
+    <div class="letter" aria-label="Example financial aid award letter with our notes">
+      <h4>Office of Financial Aid</h4>
+      <div class="ttl">Your 2027–28 Award Offer</div>
+      <div class="row"><span>Cost of attendance</span><span>$58,400</span></div>
+      <div class="row"><span>Grants &amp; scholarships</span><span>−$31,000</span></div>
+      <div class="row"><span><span class="hl">Federal Direct Loan</span><span class="note">A loan. You pay this back, with interest.</span></span><span>−$5,500</span></div>
+      <div class="row"><span><span class="hl">Federal Work-Study</span><span class="note">Earned by working. Not paid up front.</span></span><span>−$2,500</span></div>
+      <div class="row total"><span>"Remaining cost"</span><span class="strike">$19,400</span></div>
+      <div class="real"><span>Your real net price</span><span class="hl">$27,400</span></div>
+    </div>
+  </div>
+
+  <section class="band tight">
+    <div class="wrap stats">
+      <div class="stat"><b>0,000</b><span class="filler">Lorem ipsum students reached</span></div>
+      <div class="stat"><b>00</b><span class="filler">Dolor sit partner schools</span></div>
+      <div class="stat"><b>$0.0M</b><span class="filler">Amet consectetur in loans avoided</span></div>
+      <div class="stat"><b>$0</b><span>Cost to any student, ever</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap stack" style="gap:32px">
+      <div class="stack" style="gap:12px">
+        <span class="eyebrow">What we teach</span>
+        <h2>Three decisions that shape the next ten years</h2>
+      </div>
+      <div class="grid3">
+        <div class="card"><span class="num">01</span><h3>Read the offer</h3><p>Grants, loans and work-study often sit in one column labeled "aid." We show students how to separate money that is given from money that is owed.</p></div>
+        <div class="card"><span class="num">02</span><h3>Compare on net price</h3><p>Sticker price says little. Students line up every offer side by side and find the true four-year cost of each school.</p></div>
+        <div class="card"><span class="num">03</span><h3>Borrow with a plan</h3><p>If loans are part of the answer, students learn the types, the limits, and what a monthly payment looks like against a starting salary.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap split">
+      <div class="stack">
+        <span class="eyebrow">Why we exist</span>
+        <h2>No one in the house had done this before.</h2>
+        <p>Our founder opened two award letters at the kitchen table and chose the one with the bigger "aid" number. Most of it turned out to be loans. This organization is the guide she wished she had that night.</p>
+        <p><a href="#story" style="font-weight:700">Read the full story →</a></p>
+      </div>
+      <div class="stack">
+        <p class="quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."</p>
+        <p class="filler">Student Name, Class of 20XX, first in their family to attend college</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band tight">
+    <div class="wrap cta-band">
+      <div class="stack" style="gap:8px">
+        <h2>Award letters arrive every spring.</h2>
+        <p>Bring a workshop to your school, or volunteer to sit beside a student while they read theirs.</p>
+      </div>
+      <a class="btn" href="#contact">Talk to us</a>
+    </div>
+  </section>
+</div>
+
+<!-- ============ STORY ============ -->
+<div class="page" id="story">
+  <div class="wrap pagehead"><div class="stack">
+    <span class="eyebrow">Our story</span>
+    <h1>It started with <span class="hl">two letters</span> on a kitchen table.</h1>
+  </div></div>
+
+  <section class="tight">
+    <div class="wrap split">
+      <div class="prose">
+        <p>In April of her senior year, our founder had two college acceptances and two financial aid letters. Her parents had worked hard to get her to that table, but neither had been to college, and the letters might as well have been written in another language.</p>
+        <p>One school offered $39,000 in "total aid." The other offered $31,000. The choice looked obvious, so she picked the bigger number.</p>
+        <p>It was not until sophomore year, when the first loan statement arrived, that she understood what she had signed. More than a third of that "aid" was debt. The school she had turned down would have cost her family less every single year.</p>
+        <p>Nobody had lied to her. The information was all there on the page. She just had no one to tell her that an award letter is not a bill, that "aid" is not the same as "free," and that the number that matters is the one most letters never print: net price.</p>
+        <p>She started small. A spreadsheet for a younger cousin. Then a Saturday in a public library meeting room with eleven seniors, a stack of real award letters, and a box of highlighters. By the end of the morning, three of those students had changed their minds about where to enroll.</p>
+        <p>That morning became this organization. We still bring the highlighters.</p>
+        <p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+      <div class="stack" style="gap:28px">
+        <p class="quote">An award letter is not a bill, and "aid" is not the same as "free."</p>
+        <div class="card">
+          <span class="eyebrow">Our mission</span>
+          <p>To make sure every first-generation student chooses a college knowing what it will cost, what they will owe, and what their options are.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Our vision</span>
+          <p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap stack" style="gap:20px">
+      <h2>How we got here</h2>
+      <ul class="timeline">
+        <li><span class="yr">20XX</span><div><h3>The first workshop</h3><p>Eleven students, one library room, one box of highlighters.</p></div></li>
+        <li><span class="yr">20XX</span><div><h3>Lorem ipsum dolor</h3><p class="filler">Sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p></div></li>
+        <li><span class="yr">20XX</span><div><h3>Consectetur adipiscing</h3><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p></div></li>
+        <li><span class="yr">20XX</span><div><h3>Sed do eiusmod</h3><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p></div></li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<!-- ============ TEAM ============ -->
+<div class="page" id="team">
+  <div class="wrap pagehead"><div class="stack">
+    <span class="eyebrow">Our team</span>
+    <h1>People who have <span class="hl">read the fine print</span>.</h1>
+    <p class="lead">Many of us were the first in our families to go to college. All of us volunteer because someone once explained a form to us.</p>
+  </div></div>
+
+  <section class="tight">
+    <div class="wrap stack" style="gap:24px">
+      <h2>Leadership</h2>
+      <div class="grid3">
+        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Founder &amp; Executive Director</span><p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p></div>
+        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Director of Programs</span><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p></div>
+        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Director of Partnerships</span><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="wrap stack" style="gap:24px">
+      <h2>Staff &amp; volunteers</h2>
+      <div class="grid4">
+        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Curriculum Lead</span><p class="filler">Lorem ipsum dolor sit amet.</p></div>
+        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Workshop Coordinator</span><p class="filler">Consectetur adipiscing elit.</p></div>
+        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Family Outreach</span><p class="filler">Sed do eiusmod tempor.</p></div>
+        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Volunteer Mentor Lead</span><p class="filler">Incididunt ut labore et dolore.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap stack" style="gap:24px">
+      <h2>Board of directors</h2>
+      <div class="grid4">
+        <div class="card"><h3>Full Name</h3><span class="role">Board Chair</span></div>
+        <div class="card"><h3>Full Name</h3><span class="role">Treasurer</span></div>
+        <div class="card"><h3>Full Name</h3><span class="role">Secretary</span></div>
+        <div class="card"><h3>Full Name</h3><span class="role">Member</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PATHWAYS ============ -->
+<div class="page" id="pathways">
+  <div class="wrap pagehead"><div class="stack">
+    <span class="eyebrow">Pathways</span>
+    <h1>Pick the path that <span class="hl">fits you</span>.</h1>
+    <p class="lead">Whether you are choosing a college, helping someone choose, or want to give your time, there is a way in.</p>
+  </div></div>
+
+  <section class="tight">
+    <div class="wrap">
+      <div class="path">
+        <span class="who">Students</span>
+        <div><h3>The Award Letter Workshop series</h3>
+          <p>Four free sessions across senior year, timed to the aid calendar.</p>
+          <ul>
+            <li>Fall: filing the FAFSA and what it is used for</li>
+            <li>Winter: scholarships, grants and where to look</li>
+            <li>Spring: reading your award letters and finding net price</li>
+            <li>Before deposit day: loans, appeals and making the final call</li>
+          </ul></div>
+        <a class="btn" href="#contact">Sign up</a>
+      </div>
+      <div class="path">
+        <span class="who">Families</span>
+        <div><h3>Family Nights</h3>
+          <p>One evening for parents and guardians, with the same material in plain language.</p>
+          <ul>
+            <li>What you are and are not agreeing to when you co-sign</li>
+            <li>Parent PLUS loans explained</li>
+            <li class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing</li>
+          </ul></div>
+        <a class="btn" href="#contact">Find a night</a>
+      </div>
+      <div class="path">
+        <span class="who">Schools &amp; counselors</span>
+        <div><h3>Bring us to your campus</h3>
+          <p>We run workshops during advisory, after school or on a Saturday, and leave counselors with the full toolkit.</p>
+          <ul>
+            <li>Net price comparison worksheet</li>
+            <li>Award letter glossary</li>
+            <li class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing</li>
+          </ul></div>
+        <a class="btn" href="#contact">Request a visit</a>
+      </div>
+      <div class="path">
+        <span class="who">Volunteers</span>
+        <div><h3>Become a letter reader</h3>
+          <p>Sit one-on-one with a student and walk through their offers line by line. We train you first.</p>
+          <ul>
+            <li class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing</li>
+            <li class="filler">Sed do eiusmod tempor incididunt ut labore</li>
+          </ul></div>
+        <a class="btn" href="#contact">Volunteer</a>
+      </div>
+      <div class="path">
+        <span class="who">Donors</span>
+        <div><h3>Keep it free</h3>
+          <p>Students never pay. Gifts cover materials, room rentals and volunteer training.</p>
+          <ul>
+            <li class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing</li>
+            <li class="filler">Ut enim ad minim veniam, quis nostrud</li>
+          </ul></div>
+        <a class="btn" href="#contact">Give</a>
+      </div>
+    </div>
+  </section>
+  <div style="height:40px"></div>
+</div>
+
+<!-- ============ PARTNERS ============ -->
+<div class="page" id="partners">
+  <div class="wrap pagehead"><div class="stack">
+    <span class="eyebrow">Partners</span>
+    <h1>We do this <span class="hl">together</span>.</h1>
+    <p class="lead">Schools open their doors, community groups spread the word, and funders keep every seat free.</p>
+  </div></div>
+
+  <section class="tight">
+    <div class="wrap stack" style="gap:20px">
+      <h2>Our partners</h2>
+      <div class="grid3">
+        <div class="card"><div class="avatar">N</div><h3>Nandha</h3><span class="role">Partner</span><p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p></div>
+        <div class="card"><div class="avatar">D</div><h3>Dheeraj</h3><span class="role">Partner</span><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p></div>
+        <div class="card"><div class="avatar">S</div><h3>Sanchaya</h3><span class="role">Partner</span><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p></div>
+        <div class="card"><div class="avatar">T</div><h3>Tuvi</h3><span class="role">Partner</span><p class="filler">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p></div>
+        <div class="card"><div class="avatar">M</div><h3>Mrithyunjay</h3><span class="role">Partner</span><p class="filler">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.</p></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap"><div class="card" style="padding:32px">
+      <div class="cta-band">
+        <div class="stack" style="gap:8px"><h2>Partner with us</h2><p>If your school, organization or company wants first-generation students to choose college with open eyes, we would like to hear from you.</p></div>
+        <a class="btn" href="#contact" style="background:var(--brand);color:var(--on-brand)">Start a conversation</a>
+      </div>
+    </div></div>
+  </section>
+</div>
+
+<!-- ============ CONTACT ============ -->
+<div class="page" id="contact">
+  <div class="wrap pagehead"><div class="stack">
+    <span class="eyebrow">Location &amp; contact</span>
+    <h1>Come <span class="hl">find us</span>.</h1>
+  </div></div>
+
+  <section class="tight">
+    <div class="wrap split">
+      <div class="stack" style="gap:28px">
+        <div class="map"><span>Map placeholder: 123 Lorem Street</span></div>
+        <dl>
+          <dt>Address</dt><dd>123 Lorem Street, Suite 000<br>City, ST 00000</dd>
+          <dt>Email</dt><dd><a href="mailto:hello@example.org">hello@example.org</a></dd>
+          <dt>Phone</dt><dd><a href="tel:+10000000000">(000) 000-0000</a></dd>
+          <dt>Hours</dt><dd>Monday to Friday, 0:00 am to 0:00 pm</dd>
+          <dt>Social</dt><dd>@yourhandle on Instagram, LinkedIn and TikTok</dd>
+        </dl>
+      </div>
+      <div class="card" style="padding:28px">
+        <h2 style="font-size:1.6rem">Send us a message</h2>
+        <form id="contact-form" novalidate>
+          <label for="cf-name">Your name<input id="cf-name" name="name" autocomplete="name" required></label>
+          <label for="cf-email">Email<input id="cf-email" name="email" type="email" autocomplete="email" required></label>
+          <label for="cf-who">I am a
+            <select id="cf-who" name="who">
+              <option>Student</option><option>Parent or guardian</option><option>Counselor or teacher</option><option>Volunteer</option><option>Donor or partner</option>
+            </select></label>
+          <label for="cf-msg">Message<textarea id="cf-msg" name="message" required></textarea></label>
+          <button class="btn" type="submit">Send message</button>
+          <div class="formmsg" id="cf-status" role="status"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+  <div style="height:40px"></div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div class="stack" style="gap:8px">
+      <strong>Finance Forward</strong>
+      <span>Free financial guidance for first-generation college students.</span>
+      <span>A 501(c)(3) nonprofit organization. EIN 00-0000000.</span>
+    </div>
+    <div><strong>Explore</strong>
+      <a href="#story">Our Story</a><a href="#team">Team</a><a href="#pathways">Pathways</a><a href="#partners">Partners</a>
+    </div>
+    <div><strong>Contact</strong>
+      <span>hello@example.org</span><br><span>(000) 000-0000</span><br><span>123 Lorem Street, City, ST</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var pages=['home','story','team','pathways','partners','contact'];
+  function route(){
+    var h=(location.hash||'').replace('#','');
+    if(pages.indexOf(h)<0)h='home';
+    pages.forEach(function(p){document.getElementById(p).classList.toggle('active',p===h)});
+    document.querySelectorAll('nav a:not(.btn)').forEach(function(a){
+      if(a.getAttribute('href')==='#'+h)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+    });
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',route);
+  route();
+  document.getElementById('contact-form').addEventListener('submit',function(e){
+    e.preventDefault();
+    document.getElementById('cf-status').textContent='This form is not connected to an inbox yet. Email hello@example.org for now.';
+  });
+})();
+</script>
+</body>
+</html>
