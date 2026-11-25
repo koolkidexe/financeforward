@@ -1,0 +1,4 @@
+# Netlify settings for Finance Forward
+[build]
+  publish = "."
+  functions = "netlify/functions"
