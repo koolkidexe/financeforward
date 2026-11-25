@@ -108,7 +108,8 @@ section.tight{padding:64px 0}
 .pagehead h1{font-size:56px}
 
 /* Hero */
-.hero{display:grid;grid-template-columns:1fr minmax(0,480px);gap:64px;align-items:center;padding:96px 0}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:56px;align-items:center;padding:88px 0 96px}
+.hero h1{font-size:52px;line-height:1.04}
 .hero-text{display:flex;flex-direction:column;gap:24px}
 .actions{display:flex;gap:24px;align-items:center;flex-wrap:wrap;margin-top:8px}
 
@@ -239,6 +240,49 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
 .foot a{text-decoration:none}
 .foot a:hover{color:#ffffff}
 
+/* Home: how a session works */
+.walk{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:64px;align-items:start}
+.walk-steps{display:flex;flex-direction:column;gap:40px}
+.step{display:flex;flex-direction:column;gap:10px;max-width:36rem}
+.step h3{font-size:20px}
+.step p{font-size:17px;line-height:1.65}
+.step strong{color:var(--text);font-weight:600}
+.ledger{position:sticky;top:96px;background:var(--tint-2);border:1px solid var(--line);border-radius:8px;padding:28px}
+.ledger h3{font-size:16px;margin-bottom:16px}
+.ledger table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
+.ledger td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.ledger td:last-child{text-align:right;white-space:nowrap;padding-left:16px;font-weight:600}
+.ledger tr.sum td{border-bottom:0;border-top:2px solid var(--text);font-weight:700;padding-top:12px}
+.ledger .gap{height:24px;border:0}
+.ledger small{display:block;margin-top:16px;font-size:13px;line-height:1.5;color:var(--muted)}
+.intro{font-size:19px;line-height:1.6;color:var(--text-2);max-width:40rem;margin-top:16px}
+.note-line{font-size:15px;color:var(--text-2)}
+
+/* Home: topics */
+.topics{border-top:1px solid var(--line-strong);margin-top:48px}
+.topic{display:grid;grid-template-columns:280px minmax(0,1fr);gap:48px;padding:36px 0;border-bottom:1px solid var(--line)}
+.topic .tt{display:flex;flex-direction:column;gap:8px}
+.topic .tt h3{font-size:22px;letter-spacing:-.02em}
+.topic .for{font-size:14px;color:var(--muted)}
+.topic .tb{display:flex;flex-direction:column;gap:14px}
+.topic .tb p{font-size:17px;line-height:1.65;max-width:40rem}
+.topic .ex{border-left:3px solid var(--accent-ink);background:var(--tint-2);padding:14px 18px;border-radius:0 6px 6px 0;font-size:16px;line-height:1.6;color:var(--text);max-width:40rem;font-variant-numeric:tabular-nums}
+.topic .ex b{font-weight:700}
+.topic .ex small{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+
+/* Home: why we started + ways in */
+.ways{display:flex;flex-direction:column;border-top:1px solid var(--line-strong)}
+.way{display:flex;flex-direction:column;gap:6px;padding:20px 0;border-bottom:1px solid var(--line)}
+.way h3{font-size:17px}
+.way p{font-size:16px}
+.way .link{font-size:16px;margin-top:4px;align-self:flex-start}
+
+/* Home: dates strip */
+.dates{display:grid;grid-template-columns:1fr 1fr auto;gap:32px;align-items:center;padding:32px 0;border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong)}
+.dates .d{display:flex;flex-direction:column;gap:4px}
+.dates .d b{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.dates .d span{font-size:15px;color:var(--text-2)}
+
 /* Assistant */
 .ask-fab{position:fixed;right:24px;bottom:24px;z-index:40;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 20px 0 16px;border-radius:6px;border:0;background:var(--accent);color:var(--on-accent);font:inherit;font-size:16px;font-weight:700;cursor:pointer;box-shadow:inset 0 -3px 0 rgba(0,0,0,.22),0 4px 12px rgba(14,26,58,.16);transition:background-color 150ms var(--ease),transform 120ms var(--ease)}
 .ask-fab:hover{background:color-mix(in srgb,var(--accent) 88%,var(--text))}
@@ -284,7 +328,12 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 @media (max-width:900px){
+  .walk{grid-template-columns:1fr;gap:40px}
+  .topic{grid-template-columns:1fr;gap:16px;padding:28px 0}
+  .ledger{position:static}
+  .dates{grid-template-columns:1fr;gap:20px}
   h1,.pagehead h1{font-size:44px;letter-spacing:-.03em}
+  .hero h1{font-size:42px}
   h2{font-size:30px}
   section{padding:64px 0}
   .pagehead{padding:56px 32px 48px}
@@ -304,6 +353,7 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
   .wrap{padding:0 20px}
   .pagehead{padding:48px 20px 40px}
   h1,.pagehead h1{font-size:38px}
+  .hero h1{font-size:36px}
   .facts{grid-template-columns:1fr;gap:20px}
   .people{grid-template-columns:1fr}
   .letter{padding:24px 20px;transform:none}
@@ -331,7 +381,7 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
       <a class="nl" href="#pathways">Pathways</a>
       <a class="nl" href="#partners">Partners</a>
       <a class="nl" href="#contact">Contact</a>
-      <a class="btn sm" href="#pathways">Get involved</a>
+      <a class="btn sm" href="#contact">Book a session</a>
     </nav>
   </div>
 </header>
@@ -343,44 +393,75 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
   <div class="band-sun"><div class="wrap">
     <div class="hero">
       <div class="hero-text">
-        <h1>Know what college really costs before you say yes</h1>
-        <p class="lead">Free workshops for first-generation students and their families. Learn to read a financial aid offer, compare schools on what you will actually pay, and borrow only what makes sense.</p>
+        <h1>Money skills for first-generation students and their families</h1>
+        <p class="lead">Free sessions for high school and college students who are the first in their family to go to college. From the FAFSA to your first paycheck, we cover financial aid, budgeting, credit, taxes and investing, using the real paperwork you'll run into.</p>
         <div class="actions">
-          <a class="btn" href="#pathways">Find a workshop</a>
-          <a class="btn secondary" href="#story">Our story</a>
+          <a class="btn" href="#contact">Book a free session</a>
+          <button class="btn secondary" type="button" id="see-how">See what we teach</button>
         </div>
+        <p class="note-line">Free for every student and family. Nothing to buy, nothing to sign.</p>
       </div>
 
-      <div class="letter" aria-label="Example financial aid offer, marked up to show the real cost">
-        <div class="lh"><span>Office of Financial Aid</span><span>2027–28</span></div>
-        <div class="ttl">Your award offer</div>
-        <div class="row"><span>Cost of attendance</span><span class="amt">$58,400</span></div>
-        <div class="row r2"><span><span class="mark green">Grants and scholarships</span></span><span class="amt">−$31,000</span><span class="note">Free money. You keep it.</span></div>
-        <div class="row r3"><span><span class="mark">Federal Direct Loan</span></span><span class="amt">−$5,500</span><span class="note owed">A loan. You repay it with interest.</span></div>
-        <div class="row r4"><span><span class="mark">Federal Work-Study</span></span><span class="amt">−$2,500</span><span class="note owed">Earned at a campus job, paid over the year.</span></div>
-        <div class="row total"><span>Remaining cost, as printed</span><span class="amt">$19,400</span></div>
-        <div class="real"><span>What you will actually pay</span><span class="amt"><span class="mark">$27,400</span></span></div>
+      <div class="letter" aria-label="Sample pay stub, marked up to show taxes and take-home pay">
+        <div class="lh"><span>Pay statement · sample</span><span>Nov 1–15, 2026</span></div>
+        <div class="ttl">Your first paycheck</div>
+        <div class="row"><span>Gross pay, 24 hours at $20.00</span><span class="amt">$480.00</span></div>
+        <div class="row r2"><span><span class="mark">Federal income tax</span></span><span class="amt">−$18.40</span><span class="note">Withheld based on your W-4. You may get some back when you file.</span></div>
+        <div class="row r3"><span>Social Security, 6.2%</span><span class="amt">−$29.76</span></div>
+        <div class="row r4"><span>Medicare, 1.45%</span><span class="amt">−$6.96</span></div>
+        <div class="row"><span>State income tax</span><span class="amt">−$12.00</span></div>
+        <div class="real"><span>What actually lands in your account</span><span class="amt"><span class="mark green">$412.88</span></span></div>
       </div>
-    </div>
-
-  </div></div>
-  <div class="band-green"><div class="wrap">
-    <div class="facts">
-      <div class="fact"><b>4</b><span>Workshop sessions across senior year</span></div>
-      <div class="fact"><b>5</b><span>Ways to take part, from student to donor</span></div>
-      <div class="fact"><b>$0</b><span>Cost to any student or family</span></div>
     </div>
   </div></div>
 
-  <section>
+  <section id="topics">
     <div class="wrap">
-      <div class="section-head">
-        <h2>Three decisions that shape the next ten years</h2>
-      </div>
-      <div class="cols3">
-        <div class="col"><span class="n">1</span><h3>Read the offer</h3><p>Grants, loans and work-study often sit in one column labeled aid. We show students how to separate money that is given from money that is owed.</p></div>
-        <div class="col"><span class="n">2</span><h3>Compare on net price</h3><p>Sticker price says little. Students line up every offer side by side and find the true four-year cost of each school.</p></div>
-        <div class="col"><span class="n">3</span><h3>Borrow with a plan</h3><p>If loans are part of the answer, students learn the types, the limits, and what a monthly payment looks like against a starting salary.</p></div>
+      <h2>What we teach</h2>
+      <p class="intro">Six topics, each taught with real numbers and real forms. Pick the one you need right now, or come to all of them.</p>
+      <div class="topics">
+        <div class="topic">
+          <div class="tt"><h3>FAFSA help</h3><span class="for">High school seniors and college students</span></div>
+          <div class="tb">
+            <p>We sit down with you and your parents and fill it out together, from creating your account to the last signature. If you're already in college, you need to file it again every year, and we help with that too.</p>
+            <div class="ex">The 2027–28 FAFSA opened on <b>September 24, 2026</b>. Filing early matters, because some state and school aid runs out.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="tt"><h3>Net price vs sticker price</h3><span class="for">High school juniors and seniors, families</span></div>
+          <div class="tb">
+            <p>A college's sticker price is what it charges. The net price is what you pay after grants and scholarships, and it's the number to compare between schools. Aid letters list loans and work-study next to grants, so we show you how to pull them apart.</p>
+            <div class="ex"><b>$58,400</b> sticker price − <b>$31,000</b> in grants = <b>$27,400</b> net price per year. A $5,500 loan on the same letter isn't a discount. You pay it back with interest.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="tt"><h3>Budgeting and saving</h3><span class="for">Anyone with a job, a refund check or an allowance</span></div>
+          <div class="tb">
+            <p>We start from what actually lands in your account, not your hourly wage. Then we decide where each dollar goes before it's spent: bills, everyday spending, and savings for the things that always come up.</p>
+            <div class="ex">On the sample pay stub above, <b>$480</b> of work becomes <b>$412.88</b> after taxes. That's the number your budget is built on.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="tt"><h3>Credit vs debit</h3><span class="for">High school seniors and college students</span></div>
+          <div class="tb">
+            <p>A debit card spends money already in your account. A credit card borrows money you have to pay back, and if you don't pay the full balance each month, you're charged interest on what's left. We cover how credit scores work, why paying on time matters most, and how overdraft fees can hit debit cards too.</p>
+            <div class="ex">Paying the full statement balance every month means you pay <b>no interest</b> on your purchases, while still building a credit history.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="tt"><h3>Taxes</h3><span class="for">Students with a first job, and their families</span></div>
+          <div class="tb">
+            <p>What a W-4 is, why money comes out of every paycheck, and how filing a return works. We also show families which tax information the FAFSA asks for, so the two forms make sense together.</p>
+            <div class="ex">The <b>$18.40</b> in federal tax withheld on the sample stub isn't final. When you file a return, you may get some or all of it back.</div>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="tt"><h3>Investing 101</h3><span class="for">College students and older high schoolers</span></div>
+          <div class="tb">
+            <p>What stocks, index funds and retirement accounts are, how they're different from a savings account, and why starting early matters more than starting with a lot.</p>
+            <div class="ex"><b>$50 a month</b> from age 18 to 65 could grow to about <b>$219,000</b>. Start at 28 instead and it's about <b>$105,000</b>, even though you'd only have put in $6,000 less.<small>Assumes a steady 7% yearly return. Real markets go up and down, and returns aren't guaranteed.</small></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -388,25 +469,42 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
   <section class="band-mint">
     <div class="wrap split">
       <div class="blocks" style="gap:20px">
-        <h2>No one in the house had done this before</h2>
-        <p>Our founder opened two award letters at the kitchen table and chose the one with the bigger aid number. Most of it turned out to be loans. Finance Forward is the guide she wished she had that night.</p>
+        <h2>Why we started</h2>
+        <p>Our founder had two acceptance letters and two aid offers, and parents who had never seen either kind before. She picked the school with the bigger aid number. More than a third of that aid turned out to be loans.</p>
+        <p>When she started helping other students with their letters, they kept asking about everything else too: their first paycheck, a credit card offer in the mail, whether they had to file taxes. Finance Forward teaches all of it, because nobody else in the house was going to.</p>
         <a class="link" href="#story">Read the full story</a>
       </div>
-      <blockquote class="quote">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-        <cite>Student name, class of 20XX, first in their family to attend college</cite>
-      </blockquote>
+      <div class="ways">
+        <div class="way">
+          <h3>In high school?</h3>
+          <p>Come to a session on the FAFSA, comparing colleges, or your first paycheck. Parents and guardians are welcome too.</p>
+          <a class="link" href="#contact">Book a free session</a>
+        </div>
+        <div class="way">
+          <h3>Already in college?</h3>
+          <p>Budgeting on your own, credit cards, taxes on a part-time job, and how to start investing with a little money.</p>
+          <a class="link" href="#pathways">See college sessions</a>
+        </div>
+        <div class="way">
+          <h3>Do you work in a school?</h3>
+          <p>We can teach any of the six topics during advisory, after school or on a Saturday, and leave your staff the worksheets we use.</p>
+          <a class="link" href="#contact">Request a school visit</a>
+        </div>
+        <div class="way">
+          <h3>Want to volunteer?</h3>
+          <p>Help teach a session or sit one-on-one with a student. You don't need to work in finance. We train you first.</p>
+          <a class="link" href="#pathways">See what volunteering involves</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <div class="panel">
-        <div>
-          <h2>Award letters arrive every spring</h2>
-          <p>Bring a workshop to your school, or volunteer to sit beside a student while they read theirs.</p>
-        </div>
-        <a class="btn" href="#contact">Talk to us</a>
+      <div class="dates">
+        <div class="d"><b>The 2027–28 FAFSA is open</b><span>It launched September 24, 2026. File it as early as you can, and again every year in college.</span></div>
+        <div class="d"><b>2026 tax returns are due April 15, 2027</b><span>Had a job this year? Bring your W-2 and we'll walk through filing together.</span></div>
+        <a class="btn" href="#contact">Book a session</a>
       </div>
     </div>
   </section>
@@ -421,13 +519,13 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
   <section class="tight">
     <div class="wrap split">
       <div class="prose">
-        <p>In April of her senior year, our founder had two college acceptances and two financial aid letters. Her parents had worked hard to get her to that table, but neither had been to college, and the letters might as well have been written in another language.</p>
-        <p>One school offered $39,000 in total aid. The other offered $31,000. The choice looked obvious, so she picked the bigger number.</p>
-        <p>It was not until sophomore year, when the first loan statement arrived, that she understood what she had signed. <span class="mark">More than a third of that aid was debt.</span> The school she had turned down would have cost her family less every single year.</p>
-        <p>Nobody had lied to her. The information was all there on the page. She just had no one to tell her that an award letter is not a bill, that aid is not the same as free, and that the number that matters is the one most letters never print: net price.</p>
-        <p>She started small. A spreadsheet for a younger cousin. Then a Saturday in a public library meeting room with eleven seniors, a stack of real award letters, and a box of highlighters. By the end of the morning, three of those students had changed their minds about where to enroll.</p>
-        <p>That morning became Finance Forward. We still bring the highlighters.</p>
-        <p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>It was April of her senior year. She had two acceptances and two financial aid letters, and her parents, who had worked for years to get her to that point, had never been to college themselves. They sat at the kitchen table and tried to read the letters together. Nobody in the room knew what a subsidized loan was.</p>
+        <p>One school offered $39,000 in total aid. The other offered $31,000. That felt like an easy choice, so she picked the bigger number.</p>
+        <p>She didn't really understand what she'd signed until sophomore year, when the first loan statement showed up. <span class="mark">More than a third of that aid had been debt.</span> The school she turned down would have cost her family less every year she was there.</p>
+        <p>Nobody had misled her. Everything was printed on the page. What she didn't have was someone to tell her that "aid" doesn't mean free, that work-study is a job and not a discount, and that the most useful number, the net price, usually isn't printed on the letter at all.</p>
+        <p>So she started small. First a spreadsheet for a younger cousin. Then a Saturday morning in a public library meeting room with eleven seniors, a stack of their real award letters and a box of highlighters. By lunchtime, three of those students had changed their minds about where to enroll.</p>
+        <p>That Saturday became Finance Forward. Before long, students were bringing more than aid letters: a first pay stub, a credit card offer that showed up in the mail, a question about whether they had to file taxes. So we started teaching those too. Today our sessions cover six topics, from the FAFSA to investing, and we still bring the highlighters.</p>
+        <p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
       </div>
       <div class="blocks" style="gap:48px">
         <blockquote class="quote">
@@ -436,7 +534,7 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
         </blockquote>
         <div class="block hairline" style="padding-top:24px">
           <span class="label">Mission</span>
-          <p style="color:var(--text)">To make sure every first-generation student chooses a college knowing what it will cost, what they will owe, and what their options are.</p>
+          <p style="color:var(--text)">Every first-generation student should leave high school and college knowing how to pay for school, manage a paycheck, use credit carefully, file their taxes and start saving for the future.</p>
         </div>
         <div class="block hairline" style="padding-top:24px">
           <span class="label">Vision</span>
@@ -464,7 +562,7 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
 <div class="page" id="team">
   <div class="band-soft"><div class="wrap pagehead">
     <h1>People who have read the fine print</h1>
-    <p class="lead">Many of us were the first in our families to go to college. All of us volunteer because someone once explained a form to us.</p>
+    <p class="lead">A lot of us were the first in our families to go to college, and most of us can remember the first pay stub, credit card offer or aid letter we didn't understand. Here is who you'll meet at a session.</p>
   </div></div>
 
   <section class="tight">
@@ -505,75 +603,91 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
 <!-- ============ PATHWAYS ============ -->
 <div class="page" id="pathways">
   <div class="band-soft"><div class="wrap pagehead">
-    <h1>Pick the path that fits you</h1>
-    <p class="lead">Whether you are choosing a college, helping someone choose, or want to give your time, there is a way in.</p>
+    <h1>Ways to work with us</h1>
+    <p class="lead">Whether you're in high school, already in college, a parent, or someone who wants to help, here's where to start.</p>
   </div></div>
 
   <section class="tight">
     <div class="wrap"><div class="paths">
       <div class="path">
-        <div class="aud"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg>Students</div>
+        <div class="aud"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg>High school students</div>
         <div class="body">
-          <h3>The award letter workshop series</h3>
-          <p>Four free sessions across senior year, timed to the aid calendar.</p>
+          <h3>Sessions for juniors and seniors</h3>
+          <p>Short sessions, one topic at a time, timed to what's coming up for you that year.</p>
           <ul>
-            <li>Fall: filing the FAFSA and what it is used for</li>
-            <li>Winter: scholarships, grants and where to look</li>
-            <li>Spring: reading your award letters and finding net price</li>
-            <li>Before deposit day: loans, appeals and the final call</li>
+            <li>FAFSA night: filling out the form together, with your parents if they can come</li>
+            <li>Comparing colleges on net price instead of sticker price</li>
+            <li>Your first paycheck: what the W-4 is and where the taxes go</li>
+            <li>Debit vs credit, and how to avoid overdraft fees</li>
+            <li>Budgeting what you earn from a part-time job</li>
           </ul>
         </div>
-        <a class="btn secondary sm" href="#contact">Sign up</a>
+        <a class="btn secondary sm" href="#contact">Save a seat at a session</a>
+      </div>
+      <div class="path">
+        <div class="aud"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5V21h16v-4"/></svg>College students</div>
+        <div class="body">
+          <h3>Money for life on your own</h3>
+          <p>For first-generation students who are now handling rent, refund checks and their first credit card without much help from home.</p>
+          <ul>
+            <li>Budgeting a semester, including what to do with a financial aid refund</li>
+            <li>Renewing the FAFSA every year so you don't lose aid</li>
+            <li>Credit cards, credit scores and student loans after graduation</li>
+            <li>Filing taxes when you have a part-time job or a scholarship</li>
+            <li>Investing 101: index funds, retirement accounts and starting small</li>
+          </ul>
+        </div>
+        <a class="btn secondary sm" href="#contact">Join a college session</a>
       </div>
       <div class="path">
         <div class="aud"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>Families</div>
         <div class="body">
-          <h3>Family nights</h3>
-          <p>One evening for parents and guardians, with the same material in plain language.</p>
+          <h3>Family nights for parents and guardians</h3>
+          <p>An evening for the adults at home, who are often asked to sign forms nobody has explained to them.</p>
           <ul>
-            <li>What you are agreeing to when you co-sign</li>
-            <li>Parent PLUS loans explained</li>
-            <li class="filler">Lorem ipsum dolor sit amet</li>
+            <li>Which tax information the FAFSA needs from you, and where to find it</li>
+            <li>What you are agreeing to when you co-sign a loan</li>
+            <li>Parent PLUS loans: for new borrowers they are now capped at $20,000 a year and $65,000 in total per student, and the rate is 9.07%</li>
           </ul>
         </div>
-        <a class="btn secondary sm" href="#contact">Find a night</a>
+        <a class="btn secondary sm" href="#contact">Ask about the next family night</a>
       </div>
       <div class="path">
         <div class="aud"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M12 5V2h3"/><path d="M10 21v-5h4v5"/></svg>Schools and counselors</div>
         <div class="body">
-          <h3>Bring us to your campus</h3>
-          <p>We run workshops during advisory, after school or on a Saturday, and leave counselors with the full toolkit.</p>
+          <h3>Bring any topic to your school</h3>
+          <p>We come during advisory, after school or on a Saturday. Afterwards your staff keeps the materials, so you can keep teaching the topic after we leave.</p>
           <ul>
-            <li>Net price comparison worksheet</li>
-            <li>Award letter glossary</li>
+            <li>Any of the six topics, or a series that covers all of them</li>
+            <li>Worksheets for budgeting, comparing colleges and reading a pay stub</li>
             <li class="filler">Lorem ipsum dolor sit amet</li>
           </ul>
         </div>
-        <a class="btn secondary sm" href="#contact">Request a visit</a>
+        <a class="btn secondary sm" href="#contact">Request a school visit</a>
       </div>
       <div class="path">
         <div class="aud"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>Volunteers</div>
         <div class="body">
-          <h3>Become a letter reader</h3>
-          <p>Sit one-on-one with a student and walk through their offers line by line. We train you first.</p>
+          <h3>Teach a session or help one-on-one</h3>
+          <p>Help lead a session or sit with one student at a time. You don't need to work in finance. We train you on each topic before you teach it.</p>
           <ul>
             <li class="filler">Lorem ipsum dolor sit amet</li>
-            <li class="filler">Sed do eiusmod tempor incididunt</li>
+            <li>Sed do eiusmod tempor incididunt</li>
           </ul>
         </div>
-        <a class="btn secondary sm" href="#contact">Volunteer</a>
+        <a class="btn secondary sm" href="#contact">Sign up to volunteer</a>
       </div>
       <div class="path">
         <div class="aud"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 4.6 13.3A5 5 0 0 1 12 6.6a5 5 0 0 1 7.4 6.7z"/></svg>Donors</div>
         <div class="body">
-          <h3>Keep it free</h3>
-          <p>Students never pay. Gifts cover materials, room rentals and volunteer training.</p>
+          <h3>Help keep every session free</h3>
+          <p>Students and families never pay. Donations cover printed worksheets, rooms for sessions and training for new volunteers.</p>
           <ul>
             <li class="filler">Lorem ipsum dolor sit amet</li>
-            <li class="filler">Ut enim ad minim veniam</li>
+            <li>Ut enim ad minim veniam</li>
           </ul>
         </div>
-        <a class="btn secondary sm" href="#contact">Give</a>
+        <a class="btn secondary sm" href="#contact">Ask how to give</a>
       </div>
     </div></div>
   </section>
@@ -583,7 +697,7 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
 <div class="page" id="partners">
   <div class="band-soft"><div class="wrap pagehead">
     <h1>We do this together</h1>
-    <p class="lead">The people who help open doors, spread the word and keep every seat free.</p>
+    <p class="lead">These are the people who help us find rooms, reach families and keep every session free.</p>
   </div></div>
 
   <section class="tight">
@@ -602,10 +716,10 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
     <div class="wrap">
       <div class="panel">
         <div>
-          <h2>Partner with us</h2>
-          <p>If your school, organization or company wants first-generation students to choose college with open eyes, we would like to hear from you.</p>
+          <h2>Want to work with us?</h2>
+          <p>If you run a school, a library, a community group or a business and want first-generation students in your area to have this conversation, get in touch.</p>
         </div>
-        <a class="btn" href="#contact">Start a conversation</a>
+        <a class="btn" href="#contact">Get in touch about partnering</a>
       </div>
     </div>
   </section>
@@ -614,7 +728,8 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
 <!-- ============ CONTACT ============ -->
 <div class="page" id="contact">
   <div class="band-soft"><div class="wrap pagehead">
-    <h1>Come find us</h1>
+    <h1>Get in touch</h1>
+    <p class="lead">Tell us whether you're a student, a parent, a school or a volunteer, and we'll write back with next steps.</p>
   </div></div>
 
   <section class="tight">
@@ -679,7 +794,7 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
   <div class="wrap foot">
     <div>
       <strong>Finance Forward</strong>
-      <span>Free financial guidance for first-generation college students</span>
+      <span>Free financial literacy sessions for first-generation students and their families</span>
       <span>A 501(c)(3) nonprofit, EIN 00-0000000</span>
     </div>
     <div>
@@ -702,8 +817,8 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
   <div class="ask-log" id="ask-log" aria-live="polite">
     <div class="ask-sugg" id="ask-sugg">
       <button type="button">Is it really free?</button>
-      <button type="button">What happens in the workshops?</button>
-      <button type="button">How can I volunteer?</button>
+      <button type="button">What topics do you teach?</button>
+      <button type="button">Can you help with the FAFSA?</button>
     </div>
   </div>
   <form class="ask-form" id="ask-form">
@@ -719,6 +834,12 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
   var tl=document.getElementById('timeline');
   var nav=document.getElementById('main-nav'),menuBtn=document.getElementById('menu-btn');
 
+  document.addEventListener('click',function(e){
+    if(e.target&&e.target.id==='see-how'){
+      var t=document.getElementById('topics');
+      if(t)t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    }
+  });
   menuBtn.addEventListener('click',function(){
     var o=nav.classList.toggle('open');menuBtn.setAttribute('aria-expanded',o?'true':'false');
   });
@@ -765,14 +886,14 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
   }
 
   function instructions(){
-    return 'You are the friendly website assistant for Finance Forward, a nonprofit that teaches first-generation college students and their families how to make smart financial decisions about college.\n\n'+
+    return 'You are the friendly website assistant for Finance Forward, a nonprofit that teaches financial literacy to first-generation high school and college students and their families: FAFSA help, net price vs sticker price, budgeting and saving, credit vs debit, taxes, and investing 101.\n\n'+
       'RULES:\n'+
       '- Answer ONLY from the website content below. Do not invent programs, dates, prices, people, numbers or contact details.\n'+
       '- Parts of the site are still placeholders: Latin "lorem ipsum" text, "Full Name", "20XX", "123 Lorem Street", "hello@example.org", "(000) 000-0000", "EIN 00-0000000". Treat these as NOT YET AVAILABLE. Never repeat them as facts; say that detail has not been posted yet and suggest the Contact page.\n'+
       '- If the answer is not on the site, say so plainly and point the person to the Contact page (#contact).\n'+
-      '- You may explain general financial-aid terms (grant, loan, work-study, FAFSA, net price) in simple words, but say when you are giving general information rather than something from the site, and never give personal financial or legal advice.\n'+
+      '- You may explain general money terms (FAFSA, grant, loan, net price, budget, credit score, interest, W-4, tax return, index fund, retirement account) in simple words, but say when you are giving general information rather than something from the site. Never give personal financial, tax, investment or legal advice, and never recommend specific investments.\n'+
       '- When useful, name the page where they can read more (Home, Our story, Team, Pathways, Partners, Contact).\n'+
-      '- Be warm, brief (2 to 5 short sentences), and use plain language suited to a high-school senior or a parent. Plain text only, no markdown.\n\n'+
+      '- Be warm, brief (2 to 5 short sentences), and use plain language suited to a high-school or college student or a parent. Plain text only, no markdown.\n\n'+
       'WEBSITE CONTENT:\n'+siteText();
   }
 
@@ -783,7 +904,7 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
     panel.hidden=false;fab.hidden=true;fab.setAttribute('aria-expanded','true');
     if(!log.querySelector('.msg')){
       var g=document.createElement('div');g.className='msg bot';
-      g.textContent='Hi, I can answer questions about our workshops, pathways, team and how to reach us. Try one of these, or type your own.';
+      g.textContent='Hi, I can answer questions about our sessions, the topics we teach, our team and how to reach us. Try one of these, or type your own.';
       log.insertBefore(g,sugg);
     }
     input.focus();
