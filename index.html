@@ -6,36 +6,45 @@
 <title>Finance Forward</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Layout idea: a financial aid award letter, marked up with a highlighter.
-   Deep spruce ink on cool paper; one highlighter-yellow accent; mono for every dollar figure. */
+/* Layout idea: a financial aid award letter on a kitchen table, marked up with highlighters.
+   Forest ink, paper/cream/sage section bands, yellow + pastel-green marker strokes, mono for every dollar figure. */
 :root{
-  --paper:#f4f6f1;
+  --paper:#f9f8f6;          /* cream, evokes paper */
+  --white:#ffffff;
+  --sage:#e9efe8;
   --surface:#ffffff;
   --ink:#10302f;
   --ink-soft:#4a6361;
   --line:#d5ddd6;
-  --brand:#0f4a47;
+  --brand:#0f3d3a;          /* deep forest */
   --on-brand:#f4f6f1;
-  --marker:#ffe04a;
+  --marker:#ffe04a;         /* highlighter yellow */
+  --marker-2:#ffd21f;
+  --mint:#b9ecc8;           /* pastel-green highlighter */
+  --mint-2:#9fe0b4;
   --on-marker:#10302f;
   --flag:#b8402a;
+  --good-bg:#dcf3e2;--good-ink:#16603a;
+  --warn-bg:#fdecc8;--warn-ink:#8a4b06;
+  --bad-bg:#fbdcd5;--bad-ink:#9b2f1c;
   --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
   --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --paper:#0c1f1f;--surface:#132c2b;--ink:#e9efe8;--ink-soft:#a3b8b3;--line:#27423f;
-    --brand:#1b5a55;--on-brand:#f4f6f1;--marker:#ffe04a;--on-marker:#10302f;--flag:#f08a70;
+    --paper:#0f2322;--white:#0c1d1c;--sage:#14302d;--surface:#163230;--ink:#e9efe8;--ink-soft:#a3b8b3;--line:#2a4643;
+    --brand:#0a2b29;--on-brand:#f4f6f1;--flag:#f08a70;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0c1f1f;--surface:#132c2b;--ink:#e9efe8;--ink-soft:#a3b8b3;--line:#27423f;
-  --brand:#1b5a55;--on-brand:#f4f6f1;--marker:#ffe04a;--on-marker:#10302f;--flag:#f08a70;
+  --paper:#0f2322;--white:#0c1d1c;--sage:#14302d;--surface:#163230;--ink:#e9efe8;--ink-soft:#a3b8b3;--line:#2a4643;
+  --brand:#0a2b29;--on-brand:#f4f6f1;--flag:#f08a70;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -43,86 +52,169 @@ html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
 img{max-width:100%}
 a{color:inherit}
-:focus-visible{outline:3px solid var(--marker);outline-offset:2px}
+:focus-visible{outline:3px solid var(--marker-2);outline-offset:2px}
 h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.015em}
 h1{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:800}
 h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:700}
 h3{font-size:1.25rem;font-weight:700}
 p{margin:0;max-width:65ch}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-.hl{background:linear-gradient(transparent 12%,var(--marker) 12%,var(--marker) 88%,transparent 88%);color:var(--on-marker);padding:0 .12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
 .lead{font-size:1.18rem;color:var(--ink-soft)}
 .filler{color:var(--ink-soft)}
 
-/* header */
-header{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+/* Highlighter strokes: uneven ends and a slight skew so they read as hand-drawn marker */
+.hl,.hl-g{
+  color:var(--on-marker);padding:.02em .28em;margin:0 -.1em;border-radius:.7em .25em .8em .3em;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;background-repeat:no-repeat;background-size:100% 100%;
+}
+.hl{background-image:linear-gradient(100deg,transparent 0,var(--marker) 2%,var(--marker-2) 6%,var(--marker) 50%,var(--marker-2) 94%,transparent 100%)}
+.hl-g{background-image:linear-gradient(100deg,transparent 0,var(--mint) 2%,var(--mint-2) 6%,var(--mint) 50%,var(--mint-2) 94%,transparent 100%)}
+
+/* Section backgrounds alternate: white, cream, sage */
+.bg-white{background:var(--white)}
+.bg-cream{background:var(--paper)}
+.bg-sage{background:var(--sage)}
+
+/* Header: sticky, blurred */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 78%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.2rem;text-decoration:none}
-.logo span.mark{background:var(--marker);color:var(--on-marker);font-family:var(--mono);font-weight:600;font-size:.95rem;padding:2px 7px;border-radius:3px}
+.logo .mark{background:var(--marker);color:var(--on-marker);font-family:var(--mono);font-weight:600;font-size:.9rem;padding:2px 7px;border-radius:4px 2px 5px 2px;transform:rotate(-2deg)}
 nav{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
 nav a{text-decoration:none;font-weight:600;font-size:.95rem;padding:7px 11px;border-radius:6px}
-nav a:hover{background:var(--line)}
-nav a[aria-current="page"]{box-shadow:inset 0 -3px 0 var(--marker)}
-.btn{display:inline-block;background:var(--brand);color:var(--on-brand);font-weight:700;text-decoration:none;padding:12px 20px;border-radius:8px;border:0;font:inherit;font-weight:700;cursor:pointer}
-.btn:hover{filter:brightness(1.12)}
+nav a:hover{background:color-mix(in srgb,var(--line) 70%,transparent)}
+nav a[aria-current="page"]{box-shadow:inset 0 -3px 0 var(--marker-2)}
+.btn{display:inline-block;background:var(--brand);color:var(--on-brand);text-decoration:none;padding:12px 20px;border-radius:8px;border:0;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s ease,filter .15s ease}
+.btn:hover{filter:brightness(1.18);transform:translateY(-1px)}
 .btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.yellow{background:var(--marker);color:var(--on-marker)}
 nav a.btn{padding:8px 14px;color:var(--on-brand)}
 nav a.btn:hover{background:var(--brand)}
 
-/* pages */
 .page{display:none}
 .page.active{display:block}
-section{padding:64px 0}
-section.tight{padding:40px 0}
+section{padding:68px 0}
+section.tight{padding:44px 0}
 .stack{display:flex;flex-direction:column;gap:20px}
-.pagehead{padding:56px 0 8px}
+.pagehead{padding:60px 0 36px}
 .pagehead .stack{gap:14px}
 
-/* hero */
-.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:56px 0 64px}
+/* Hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:60px 0 72px}
 .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
-.letter{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:26px 24px;font-family:var(--mono);font-size:.88rem;box-shadow:8px 8px 0 var(--brand);transform:rotate(1.2deg);position:relative}
-.letter h4{margin:0 0 4px;font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
-.letter .ttl{font-weight:600;font-size:1rem;margin-bottom:14px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-variant-numeric:tabular-nums}
-.row.total{border-bottom:0;border-top:2px solid var(--ink);margin-top:6px;font-weight:600}
-.note{display:block;font-family:var(--body);font-size:.8rem;font-weight:600;color:var(--flag);margin-top:2px}
-.strike{text-decoration:line-through;text-decoration-color:var(--flag);text-decoration-thickness:2px}
-.real{margin-top:12px;display:flex;justify-content:space-between;gap:12px;font-weight:600;font-variant-numeric:tabular-nums}
+
+/* Award letter: a real sheet of paper. Stays paper-colored in dark mode too. */
+.letter{
+  --l-ink:#1d2b2a;--l-soft:#5d6a68;--l-rule:#d8d2c4;
+  background-color:#fdfbf5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .34 0 0 0 0 .22 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(180deg,#fffdf8,#f7f2e6);
+  color:var(--l-ink);border-radius:3px;padding:30px 28px 26px;font-family:var(--mono);font-size:.86rem;
+  transform:rotate(-1deg);
+  box-shadow:0 1px 1px rgba(40,30,10,.08),0 6px 14px rgba(40,30,10,.10),0 22px 44px -12px rgba(20,40,38,.28);
+  position:relative;color-scheme:light;
+}
+.letter::after{content:"";position:absolute;left:0;right:0;top:34%;height:1px;background:linear-gradient(90deg,transparent,rgba(120,100,60,.12),transparent)}
+.letter .lh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:2px solid var(--l-ink);padding-bottom:10px;margin-bottom:6px}
+.letter h4{margin:0;font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--l-soft);font-weight:500}
+.letter .ttl{font-family:var(--serif);font-size:1.35rem;font-weight:500;color:var(--l-ink)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dashed var(--l-rule);font-variant-numeric:tabular-nums}
+.row .lbl{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.row .amt{white-space:nowrap}
+.row.total{border-bottom:0;border-top:2px solid var(--l-ink);margin-top:6px;font-weight:600}
+.pill{font-family:var(--body);font-size:.68rem;font-weight:700;letter-spacing:.02em;padding:2px 8px;border-radius:999px;white-space:nowrap;line-height:1.5}
+.pill.free{background:var(--good-bg);color:var(--good-ink)}
+.pill.owed{background:var(--bad-bg);color:var(--bad-ink)}
+.pill.later{background:var(--warn-bg);color:var(--warn-ink)}
+.letter .strike{text-decoration:line-through;text-decoration-color:#b8402a;text-decoration-thickness:2px;color:var(--l-soft)}
+.real{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:600;font-variant-numeric:tabular-nums;font-size:.95rem}
+.letter .scrawl{margin-top:14px;font-family:var(--serif);font-style:italic;font-size:.95rem;color:#9b2f1c;transform:rotate(-1.5deg)}
 @media (prefers-reduced-motion:no-preference){
-  .letter .hl{background-size:0 100%;background-repeat:no-repeat;animation:mark .7s .5s ease-out forwards}
+  .letter .hl,.letter .hl-g{animation:mark .7s ease-out both}
+  .letter .row:nth-child(3) .hl-g{animation-delay:.35s}
+  .letter .row:nth-child(4) .hl{animation-delay:.6s}
+  .letter .row:nth-child(5) .hl{animation-delay:.85s}
   .letter .real .hl{animation-delay:1.3s}
-  @keyframes mark{to{background-size:100% 100%}}
+  @keyframes mark{from{background-size:0 100%}to{background-size:100% 100%}}
 }
 
-/* blocks */
+/* Impact strip */
 .band{background:var(--brand);color:var(--on-brand)}
-.band .eyebrow,.band .filler{color:var(--on-brand);opacity:.8}
+.band .filler{color:var(--on-brand);opacity:.78}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-.stat b{display:block;font-family:var(--mono);font-size:2.2rem;font-weight:600;color:var(--marker);font-variant-numeric:tabular-nums}
+.stat{display:flex;flex-direction:column;gap:4px;padding-left:16px;border-left:2px solid rgba(255,224,74,.35)}
+.stat b{font-family:var(--mono);font-size:2.3rem;font-weight:600;color:var(--marker);font-variant-numeric:tabular-nums;line-height:1.1}
+
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:10px}
 .card p{font-size:.97rem}
-.card .more{margin-top:auto;font-weight:700;padding-top:6px}
 .num{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft)}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
-.quote{font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);font-weight:500;line-height:1.25;border-left:6px solid var(--marker);padding-left:20px;max-width:28ch}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
 .prose{display:flex;flex-direction:column;gap:18px}
-.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.timeline li{display:grid;grid-template-columns:90px 1fr;gap:20px;padding:18px 0;border-top:1px solid var(--line)}
-.timeline .yr{font-family:var(--mono);font-weight:600}
-.avatar{width:72px;height:72px;border-radius:50%;background:var(--brand);color:var(--marker);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.4rem}
-.role{font-family:var(--mono);font-size:.8rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
-.path{display:grid;grid-template-columns:150px 1fr auto;gap:28px;align-items:start;padding:30px 0;border-top:2px solid var(--ink)}
-.path ul{margin:10px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:.97rem}
-.path .who{font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em}
-.logo-tile{background:var(--surface);border:1px dashed var(--ink-soft);border-radius:10px;min-height:110px;display:grid;place-items:center;font-family:var(--mono);font-size:.85rem;color:var(--ink-soft);text-align:center;padding:12px}
-.map{background:var(--surface);border:1px dashed var(--ink-soft);border-radius:10px;min-height:260px;display:grid;place-items:center;font-family:var(--mono);font-size:.85rem;color:var(--ink-soft);text-align:center;padding:16px;
-  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:36px 36px}
-.map span{background:var(--marker);color:var(--on-marker);padding:4px 10px;border-radius:4px;font-weight:600}
+
+/* Pull quote */
+.quote{position:relative;margin:0;padding:8px 0 8px 28px;border-left:6px solid var(--brand);font-family:var(--serif);font-weight:500;font-size:clamp(1.55rem,3.2vw,2.2rem);line-height:1.22;max-width:24ch}
+:root[data-theme="dark"] .quote{border-left-color:var(--mint)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .quote{border-left-color:var(--mint)}}
+.quote::before{content:"\201C";position:absolute;left:18px;top:-.62em;font-family:var(--serif);font-size:5.5rem;line-height:1;color:var(--mint-2);pointer-events:none}
+.quote p{position:relative;max-width:none}
+.quote cite{display:block;margin-top:14px;font-family:var(--mono);font-style:normal;font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* Timeline */
+.timeline{list-style:none;margin:0;padding:0 0 0 44px;position:relative;display:flex;flex-direction:column;gap:8px;--fill:0px}
+.timeline::before,.timeline::after{content:"";position:absolute;left:13px;top:10px;width:3px;border-radius:3px}
+.timeline::before{bottom:10px;background:var(--line)}
+.timeline::after{height:var(--fill);background:var(--brand);transition:height .25s linear}
+:root[data-theme="dark"] .timeline::after{background:var(--mint)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .timeline::after{background:var(--mint)}}
+.timeline li{position:relative;padding:14px 0 22px}
+.timeline .dot{position:absolute;left:-44px;top:14px;width:29px;height:29px;border-radius:50%;background:var(--surface);border:3px solid var(--line);transition:background .3s,border-color .3s,box-shadow .3s}
+.timeline li.lit .dot{background:var(--marker);border-color:var(--brand);box-shadow:0 0 0 6px color-mix(in srgb,var(--marker) 35%,transparent)}
+.timeline .yr{font-family:var(--mono);font-weight:600;font-size:.85rem;color:var(--ink-soft)}
+.timeline h3{margin:2px 0 4px}
+
+/* Portraits */
+.portrait{position:relative;width:96px;aspect-ratio:1;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#cfe3d3,#e8ddc4);color:#0f3d3a}
+.portrait.lg{width:100%;aspect-ratio:4/3;border-radius:12px}
+.portrait svg{position:absolute;inset:auto 0 0 0;width:100%;height:88%;opacity:.55}
+/* Drop a real photo in as <img> inside .portrait: the filter + multiply blend gives every photo the same warm tint */
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);mix-blend-mode:multiply}
+.portrait .tag{position:absolute;right:8px;bottom:8px;font-family:var(--mono);font-size:.66rem;background:rgba(255,255,255,.75);color:#0f3d3a;padding:1px 6px;border-radius:4px}
+.role{font-family:var(--mono);font-size:.78rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
+.person{transition:transform .2s ease,box-shadow .2s ease}
+.person:hover{transform:translateY(-4px);box-shadow:0 14px 28px -14px rgba(15,61,58,.35)}
+@media (prefers-reduced-motion:reduce){.person,.btn{transition:none}.person:hover,.btn:hover{transform:none}}
+
+/* Pathway cards */
+.paths{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.paths .card{padding:28px;gap:12px}
+.paths .card:first-child{grid-column:1/-1}
+.ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:var(--sage);color:var(--brand)}
+:root[data-theme="dark"] .ico{color:var(--mint)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ico{color:var(--mint)}}
+.ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.paths .head{display:flex;align-items:center;gap:14px}
+.paths .who{font-family:var(--mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+.paths ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:.97rem}
+.paths .btn{align-self:flex-start;margin-top:auto}
+.paths .card:first-child ul{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 32px}
+
+/* Map */
+.map{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--sage)}
+.map svg{display:block;width:100%;height:auto}
+.map .blk{fill:var(--surface)}
+.map .road{stroke:var(--paper);stroke-linecap:round}
+.map .river{fill:none;stroke:#bcd9df;stroke-width:22;stroke-linecap:round}
+.map .park{fill:#cbe6cf}
+.map .lbl{font-family:var(--mono);font-size:11px;fill:var(--ink-soft);letter-spacing:.06em}
+.map .pin{fill:var(--brand)}
+.map .pinc{fill:var(--marker)}
+.map .tagbg{fill:var(--marker)}
+.map .tagtx{font-family:var(--body);font-weight:700;font-size:13px;fill:#10302f}
+
 dl{margin:0;display:grid;grid-template-columns:110px 1fr;gap:10px 16px}
 dt{font-family:var(--mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);padding-top:3px}
 dd{margin:0}
@@ -132,32 +224,63 @@ input,select,textarea{font:inherit;color:var(--ink);background:var(--surface);bo
 textarea{min-height:120px;resize:vertical}
 .formmsg{font-size:.92rem;font-weight:600;color:var(--flag);min-height:1.4em}
 .cta-band{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
-.cta-band .btn{background:var(--marker);color:var(--on-marker)}
 
-footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:var(--ink-soft)}
+footer{background:var(--brand);color:var(--on-brand);padding:44px 0;font-size:.92rem}
+footer span,footer a{opacity:.85}
 .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
 .foot a{display:block;text-decoration:none;padding:2px 0}
-.foot a:hover{text-decoration:underline}
-.foot strong{color:var(--ink);font-family:var(--display)}
+.foot a:hover{text-decoration:underline;opacity:1}
+.foot strong{font-family:var(--display);display:block;margin-bottom:6px}
+
+/* Ask Finance Forward: floating assistant, bottom right */
+.ask-fab{position:fixed;right:20px;bottom:20px;z-index:40;display:flex;align-items:center;gap:10px;background:var(--brand);color:var(--on-brand);border:0;border-radius:999px;padding:12px 18px 12px 14px;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 10px 28px -8px rgba(10,40,38,.55)}
+.ask-fab:hover{filter:brightness(1.15)}
+.ask-fab .dot{width:30px;height:30px;border-radius:50%;background:var(--marker);color:var(--on-marker);display:grid;place-items:center;font-family:var(--mono);font-size:.78rem;font-weight:600}
+.ask-fab[hidden],.ask-panel[hidden]{display:none}
+.ask-panel{position:fixed;right:20px;bottom:20px;z-index:41;width:min(390px,calc(100vw - 32px));height:min(580px,calc(100vh - 110px));display:flex;flex-direction:column;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 60px -18px rgba(10,40,38,.5);overflow:hidden}
+.ask-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;background:var(--brand);color:var(--on-brand)}
+.ask-head strong{font-family:var(--display);font-size:1.05rem;display:block}
+.ask-head small{opacity:.8;font-size:.8rem}
+.ask-x{background:transparent;border:0;color:inherit;font-size:1.5rem;line-height:1;cursor:pointer;padding:4px 8px;border-radius:6px}
+.ask-x:hover{background:rgba(255,255,255,.12)}
+.ask-log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--paper)}
+.msg{max-width:88%;padding:10px 13px;border-radius:14px;font-size:.94rem;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.bot{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg.me{align-self:flex-end;background:var(--brand);color:var(--on-brand);border-bottom-right-radius:4px}
+.msg.err{color:var(--flag)}
+.msg.wait{color:var(--ink-soft);font-style:italic}
+.ask-sugg{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;background:var(--paper)}
+.ask-sugg button{font:inherit;font-size:.82rem;font-weight:600;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:6px 11px;cursor:pointer}
+.ask-sugg button:hover{border-color:var(--ink-soft)}
+.ask-form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:var(--surface)}
+.ask-form input{flex:1;min-width:0;padding:10px 12px}
+.ask-form button{padding:10px 14px}
+.ask-form button:disabled{opacity:.5;cursor:default;transform:none}
+.ask-note{font-size:.72rem;color:var(--ink-soft);padding:0 12px 10px;background:var(--surface)}
 
 @media (max-width:860px){
-  .hero,.split{grid-template-columns:1fr;gap:36px}
+  .hero,.split{grid-template-columns:1fr;gap:40px}
   .grid3,.grid4{grid-template-columns:repeat(2,1fr)}
   .stats{grid-template-columns:repeat(2,1fr)}
-  .path{grid-template-columns:1fr;gap:10px}
+  .paths{grid-template-columns:1fr}
+  .paths .card:first-child ul{grid-template-columns:1fr}
   .foot{grid-template-columns:1fr}
-  .letter{transform:none}
 }
 @media (max-width:520px){
   .grid2,.grid3,.grid4{grid-template-columns:1fr}
-  .timeline li{grid-template-columns:1fr;gap:4px}
   dl{grid-template-columns:1fr;gap:2px 0}
   dd{margin-bottom:10px}
-  section{padding:44px 0}
+  section{padding:48px 0}
+  .letter{padding:24px 18px}
 }
 </style>
 </head>
 <body>
+
+<!-- One silhouette shape, reused by every portrait placeholder -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="silhouette" viewBox="0 0 100 100"><circle cx="50" cy="38" r="19" fill="currentColor"/><path d="M12 100c2-24 18-37 38-37s36 13 38 37z" fill="currentColor"/></symbol>
+</svg>
 
 <header>
   <div class="wrap bar">
@@ -178,26 +301,29 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
 
 <!-- ============ HOME ============ -->
 <div class="page" id="home">
-  <div class="wrap hero">
-    <div class="stack">
-      <span class="eyebrow">For first-generation college students</span>
-      <h1>Know what college <span class="hl">really costs</span> before you say yes.</h1>
-      <p class="lead">We teach first-generation students and their families how to read a financial aid offer, compare schools on real cost, and borrow only what makes sense. Every workshop is free.</p>
-      <div class="cta">
-        <a class="btn" href="#pathways">Find your pathway</a>
-        <a class="btn alt" href="#story">Read our story</a>
+  <div class="bg-cream">
+    <div class="wrap hero">
+      <div class="stack">
+        <span class="eyebrow">For first-generation college students</span>
+        <h1>Know what college <span class="hl">really costs</span> before you say yes.</h1>
+        <p class="lead">We teach first-generation students and their families how to read a financial aid offer, compare schools on real cost, and borrow only what makes sense. Every workshop is free.</p>
+        <div class="cta">
+          <a class="btn" href="#pathways">Find your pathway</a>
+          <a class="btn alt" href="#story">Read our story</a>
+        </div>
       </div>
-    </div>
 
-    <div class="letter" aria-label="Example financial aid award letter with our notes">
-      <h4>Office of Financial Aid</h4>
-      <div class="ttl">Your 2027–28 Award Offer</div>
-      <div class="row"><span>Cost of attendance</span><span>$58,400</span></div>
-      <div class="row"><span>Grants &amp; scholarships</span><span>−$31,000</span></div>
-      <div class="row"><span><span class="hl">Federal Direct Loan</span><span class="note">A loan. You pay this back, with interest.</span></span><span>−$5,500</span></div>
-      <div class="row"><span><span class="hl">Federal Work-Study</span><span class="note">Earned by working. Not paid up front.</span></span><span>−$2,500</span></div>
-      <div class="row total"><span>"Remaining cost"</span><span class="strike">$19,400</span></div>
-      <div class="real"><span>Your real net price</span><span class="hl">$27,400</span></div>
+      <div class="letter" aria-label="Example financial aid award letter, marked up with highlighters">
+        <div class="lh"><h4>Office of Financial Aid</h4><h4>Ref. 000-000</h4></div>
+        <div class="ttl">Your 2027–28 Award Offer</div>
+        <div class="row"><span class="lbl">Cost of attendance</span><span class="amt">$58,400</span></div>
+        <div class="row"><span class="lbl"><span class="hl-g">Grants &amp; scholarships</span><span class="pill free">Free money</span></span><span class="amt">−$31,000</span></div>
+        <div class="row"><span class="lbl"><span class="hl">Federal Direct Loan</span><span class="pill owed">Owed</span></span><span class="amt">−$5,500</span></div>
+        <div class="row"><span class="lbl"><span class="hl">Federal Work-Study</span><span class="pill later">Not upfront</span></span><span class="amt">−$2,500</span></div>
+        <div class="row total"><span>"Remaining cost"</span><span class="amt strike">$19,400</span></div>
+        <div class="real"><span>Your real net price</span><span class="hl">$27,400</span></div>
+        <div class="scrawl">↑ loans + work-study aren't a discount</div>
+      </div>
     </div>
   </div>
 
@@ -210,7 +336,7 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
     </div>
   </section>
 
-  <section>
+  <section class="bg-white">
     <div class="wrap stack" style="gap:32px">
       <div class="stack" style="gap:12px">
         <span class="eyebrow">What we teach</span>
@@ -224,18 +350,18 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
     </div>
   </section>
 
-  <section style="padding-top:0">
+  <section class="bg-sage">
     <div class="wrap split">
       <div class="stack">
         <span class="eyebrow">Why we exist</span>
         <h2>No one in the house had done this before.</h2>
-        <p>Our founder opened two award letters at the kitchen table and chose the one with the bigger "aid" number. Most of it turned out to be loans. This organization is the guide she wished she had that night.</p>
+        <p>Our founder opened two award letters at the kitchen table and chose the one with the bigger "aid" number. Most of it turned out to be loans. Finance Forward is the guide she wished she had that night.</p>
         <p><a href="#story" style="font-weight:700">Read the full story →</a></p>
       </div>
-      <div class="stack">
-        <p class="quote">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."</p>
-        <p class="filler">Student Name, Class of 20XX, first in their family to attend college</p>
-      </div>
+      <blockquote class="quote">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+        <cite>Student Name · Class of 20XX · First in their family</cite>
+      </blockquote>
     </div>
   </section>
 
@@ -245,31 +371,34 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
         <h2>Award letters arrive every spring.</h2>
         <p>Bring a workshop to your school, or volunteer to sit beside a student while they read theirs.</p>
       </div>
-      <a class="btn" href="#contact">Talk to us</a>
+      <a class="btn yellow" href="#contact">Talk to us</a>
     </div>
   </section>
 </div>
 
 <!-- ============ STORY ============ -->
 <div class="page" id="story">
-  <div class="wrap pagehead"><div class="stack">
+  <div class="bg-cream"><div class="wrap pagehead"><div class="stack">
     <span class="eyebrow">Our story</span>
     <h1>It started with <span class="hl">two letters</span> on a kitchen table.</h1>
-  </div></div>
+  </div></div></div>
 
-  <section class="tight">
+  <section class="bg-white">
     <div class="wrap split">
       <div class="prose">
         <p>In April of her senior year, our founder had two college acceptances and two financial aid letters. Her parents had worked hard to get her to that table, but neither had been to college, and the letters might as well have been written in another language.</p>
         <p>One school offered $39,000 in "total aid." The other offered $31,000. The choice looked obvious, so she picked the bigger number.</p>
         <p>It was not until sophomore year, when the first loan statement arrived, that she understood what she had signed. More than a third of that "aid" was debt. The school she had turned down would have cost her family less every single year.</p>
-        <p>Nobody had lied to her. The information was all there on the page. She just had no one to tell her that an award letter is not a bill, that "aid" is not the same as "free," and that the number that matters is the one most letters never print: net price.</p>
+        <p>Nobody had lied to her. The information was all there on the page. She just had no one to tell her that an award letter is <span class="hl">not a bill</span>, that "aid" is not the same as "free," and that the number that matters is the one most letters never print: <span class="hl-g">net price</span>.</p>
         <p>She started small. A spreadsheet for a younger cousin. Then a Saturday in a public library meeting room with eleven seniors, a stack of real award letters, and a box of highlighters. By the end of the morning, three of those students had changed their minds about where to enroll.</p>
-        <p>That morning became this organization. We still bring the highlighters.</p>
+        <p>That morning became Finance Forward. <span class="hl">We still bring the highlighters.</span></p>
         <p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
       </div>
-      <div class="stack" style="gap:28px">
-        <p class="quote">An award letter is not a bill, and "aid" is not the same as "free."</p>
+      <div class="stack" style="gap:32px">
+        <blockquote class="quote">
+          <p>An award letter is not a bill, and "aid" is not the same as "free."</p>
+          <cite>Our founder</cite>
+        </blockquote>
         <div class="card">
           <span class="eyebrow">Our mission</span>
           <p>To make sure every first-generation student chooses a college knowing what it will cost, what they will owe, and what their options are.</p>
@@ -282,14 +411,18 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
     </div>
   </section>
 
-  <section>
-    <div class="wrap stack" style="gap:20px">
-      <h2>How we got here</h2>
-      <ul class="timeline">
-        <li><span class="yr">20XX</span><div><h3>The first workshop</h3><p>Eleven students, one library room, one box of highlighters.</p></div></li>
-        <li><span class="yr">20XX</span><div><h3>Lorem ipsum dolor</h3><p class="filler">Sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p></div></li>
-        <li><span class="yr">20XX</span><div><h3>Consectetur adipiscing</h3><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p></div></li>
-        <li><span class="yr">20XX</span><div><h3>Sed do eiusmod</h3><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p></div></li>
+  <section class="bg-sage">
+    <div class="wrap stack" style="gap:28px;max-width:820px">
+      <div class="stack" style="gap:10px">
+        <span class="eyebrow">Milestones</span>
+        <h2>How we got here</h2>
+      </div>
+      <ul class="timeline" id="timeline">
+        <li><span class="dot" aria-hidden="true"></span><span class="yr">20XX</span><h3>The first workshop</h3><p>Eleven students, one library room, one box of highlighters.</p></li>
+        <li><span class="dot" aria-hidden="true"></span><span class="yr">20XX</span><h3>Lorem ipsum dolor</h3><p class="filler">Sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p></li>
+        <li><span class="dot" aria-hidden="true"></span><span class="yr">20XX</span><h3>Consectetur adipiscing</h3><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p></li>
+        <li><span class="dot" aria-hidden="true"></span><span class="yr">20XX</span><h3>Sed do eiusmod</h3><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p></li>
+        <li><span class="dot" aria-hidden="true"></span><span class="yr">Today</span><h3>Finance Forward</h3><p class="filler">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.</p></li>
       </ul>
     </div>
   </section>
@@ -297,43 +430,43 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
 
 <!-- ============ TEAM ============ -->
 <div class="page" id="team">
-  <div class="wrap pagehead"><div class="stack">
+  <div class="bg-cream"><div class="wrap pagehead"><div class="stack">
     <span class="eyebrow">Our team</span>
     <h1>People who have <span class="hl">read the fine print</span>.</h1>
     <p class="lead">Many of us were the first in our families to go to college. All of us volunteer because someone once explained a form to us.</p>
-  </div></div>
+  </div></div></div>
 
-  <section class="tight">
+  <section class="bg-white">
     <div class="wrap stack" style="gap:24px">
       <h2>Leadership</h2>
       <div class="grid3">
-        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Founder &amp; Executive Director</span><p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p></div>
-        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Director of Programs</span><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p></div>
-        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Director of Partnerships</span><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.</p></div>
+        <div class="card person"><div class="portrait lg"><svg aria-hidden="true"><use href="#silhouette"/></svg><span class="tag">Photo</span></div><h3>Full Name</h3><span class="role">Founder &amp; Executive Director</span><p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p></div>
+        <div class="card person"><div class="portrait lg"><svg aria-hidden="true"><use href="#silhouette"/></svg><span class="tag">Photo</span></div><h3>Full Name</h3><span class="role">Director of Programs</span><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p></div>
+        <div class="card person"><div class="portrait lg"><svg aria-hidden="true"><use href="#silhouette"/></svg><span class="tag">Photo</span></div><h3>Full Name</h3><span class="role">Director of Partnerships</span><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla.</p></div>
       </div>
     </div>
   </section>
 
-  <section class="tight">
+  <section class="bg-sage">
     <div class="wrap stack" style="gap:24px">
       <h2>Staff &amp; volunteers</h2>
       <div class="grid4">
-        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Curriculum Lead</span><p class="filler">Lorem ipsum dolor sit amet.</p></div>
-        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Workshop Coordinator</span><p class="filler">Consectetur adipiscing elit.</p></div>
-        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Family Outreach</span><p class="filler">Sed do eiusmod tempor.</p></div>
-        <div class="card"><div class="avatar">FN</div><h3>Full Name</h3><span class="role">Volunteer Mentor Lead</span><p class="filler">Incididunt ut labore et dolore.</p></div>
+        <div class="card person"><div class="portrait"><svg aria-hidden="true"><use href="#silhouette"/></svg></div><h3>Full Name</h3><span class="role">Curriculum Lead</span><p class="filler">Lorem ipsum dolor sit amet.</p></div>
+        <div class="card person"><div class="portrait"><svg aria-hidden="true"><use href="#silhouette"/></svg></div><h3>Full Name</h3><span class="role">Workshop Coordinator</span><p class="filler">Consectetur adipiscing elit.</p></div>
+        <div class="card person"><div class="portrait"><svg aria-hidden="true"><use href="#silhouette"/></svg></div><h3>Full Name</h3><span class="role">Family Outreach</span><p class="filler">Sed do eiusmod tempor.</p></div>
+        <div class="card person"><div class="portrait"><svg aria-hidden="true"><use href="#silhouette"/></svg></div><h3>Full Name</h3><span class="role">Volunteer Mentor Lead</span><p class="filler">Incididunt ut labore et dolore.</p></div>
       </div>
     </div>
   </section>
 
-  <section>
+  <section class="bg-white">
     <div class="wrap stack" style="gap:24px">
       <h2>Board of directors</h2>
       <div class="grid4">
-        <div class="card"><h3>Full Name</h3><span class="role">Board Chair</span></div>
-        <div class="card"><h3>Full Name</h3><span class="role">Treasurer</span></div>
-        <div class="card"><h3>Full Name</h3><span class="role">Secretary</span></div>
-        <div class="card"><h3>Full Name</h3><span class="role">Member</span></div>
+        <div class="card person"><h3>Full Name</h3><span class="role">Board Chair</span></div>
+        <div class="card person"><h3>Full Name</h3><span class="role">Treasurer</span></div>
+        <div class="card person"><h3>Full Name</h3><span class="role">Secretary</span></div>
+        <div class="card person"><h3>Full Name</h3><span class="role">Member</span></div>
       </div>
     </div>
   </section>
@@ -341,98 +474,97 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
 
 <!-- ============ PATHWAYS ============ -->
 <div class="page" id="pathways">
-  <div class="wrap pagehead"><div class="stack">
+  <div class="bg-cream"><div class="wrap pagehead"><div class="stack">
     <span class="eyebrow">Pathways</span>
     <h1>Pick the path that <span class="hl">fits you</span>.</h1>
     <p class="lead">Whether you are choosing a college, helping someone choose, or want to give your time, there is a way in.</p>
-  </div></div>
+  </div></div></div>
 
-  <section class="tight">
-    <div class="wrap">
-      <div class="path">
-        <span class="who">Students</span>
-        <div><h3>The Award Letter Workshop series</h3>
-          <p>Four free sessions across senior year, timed to the aid calendar.</p>
-          <ul>
-            <li>Fall: filing the FAFSA and what it is used for</li>
-            <li>Winter: scholarships, grants and where to look</li>
-            <li>Spring: reading your award letters and finding net price</li>
-            <li>Before deposit day: loans, appeals and making the final call</li>
-          </ul></div>
+  <section class="bg-sage">
+    <div class="wrap paths">
+      <div class="card">
+        <div class="head"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg></div><span class="who">Students</span></div>
+        <h3>The Award Letter Workshop series</h3>
+        <p>Four free sessions across senior year, timed to the aid calendar.</p>
+        <ul>
+          <li>Fall: filing the FAFSA and what it is used for</li>
+          <li>Winter: scholarships, grants and where to look</li>
+          <li>Spring: reading your award letters and finding net price</li>
+          <li>Before deposit day: loans, appeals and the final call</li>
+        </ul>
         <a class="btn" href="#contact">Sign up</a>
       </div>
-      <div class="path">
-        <span class="who">Families</span>
-        <div><h3>Family Nights</h3>
-          <p>One evening for parents and guardians, with the same material in plain language.</p>
-          <ul>
-            <li>What you are and are not agreeing to when you co-sign</li>
-            <li>Parent PLUS loans explained</li>
-            <li class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing</li>
-          </ul></div>
+      <div class="card">
+        <div class="head"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></div><span class="who">Families</span></div>
+        <h3>Family Nights</h3>
+        <p>One evening for parents and guardians, with the same material in plain language.</p>
+        <ul>
+          <li>What you are agreeing to when you co-sign</li>
+          <li>Parent PLUS loans explained</li>
+          <li class="filler">Lorem ipsum dolor sit amet</li>
+        </ul>
         <a class="btn" href="#contact">Find a night</a>
       </div>
-      <div class="path">
-        <span class="who">Schools &amp; counselors</span>
-        <div><h3>Bring us to your campus</h3>
-          <p>We run workshops during advisory, after school or on a Saturday, and leave counselors with the full toolkit.</p>
-          <ul>
-            <li>Net price comparison worksheet</li>
-            <li>Award letter glossary</li>
-            <li class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing</li>
-          </ul></div>
+      <div class="card">
+        <div class="head"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M12 5V2h3"/><path d="M10 21v-5h4v5"/><path d="M9 11h.01M15 11h.01"/></svg></div><span class="who">Schools &amp; counselors</span></div>
+        <h3>Bring us to your campus</h3>
+        <p>We run workshops during advisory, after school or on a Saturday, and leave counselors with the full toolkit.</p>
+        <ul>
+          <li>Net price comparison worksheet</li>
+          <li>Award letter glossary</li>
+          <li class="filler">Lorem ipsum dolor sit amet</li>
+        </ul>
         <a class="btn" href="#contact">Request a visit</a>
       </div>
-      <div class="path">
-        <span class="who">Volunteers</span>
-        <div><h3>Become a letter reader</h3>
-          <p>Sit one-on-one with a student and walk through their offers line by line. We train you first.</p>
-          <ul>
-            <li class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing</li>
-            <li class="filler">Sed do eiusmod tempor incididunt ut labore</li>
-          </ul></div>
+      <div class="card">
+        <div class="head"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg></div><span class="who">Volunteers</span></div>
+        <h3>Become a letter reader</h3>
+        <p>Sit one-on-one with a student and walk through their offers line by line. We train you first.</p>
+        <ul>
+          <li class="filler">Lorem ipsum dolor sit amet</li>
+          <li class="filler">Sed do eiusmod tempor incididunt</li>
+        </ul>
         <a class="btn" href="#contact">Volunteer</a>
       </div>
-      <div class="path">
-        <span class="who">Donors</span>
-        <div><h3>Keep it free</h3>
-          <p>Students never pay. Gifts cover materials, room rentals and volunteer training.</p>
-          <ul>
-            <li class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing</li>
-            <li class="filler">Ut enim ad minim veniam, quis nostrud</li>
-          </ul></div>
+      <div class="card">
+        <div class="head"><div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5 4.6 13.3A5 5 0 0 1 12 6.6a5 5 0 0 1 7.4 6.7z"/></svg></div><span class="who">Donors</span></div>
+        <h3>Keep it free</h3>
+        <p>Students never pay. Gifts cover materials, room rentals and volunteer training.</p>
+        <ul>
+          <li class="filler">Lorem ipsum dolor sit amet</li>
+          <li class="filler">Ut enim ad minim veniam</li>
+        </ul>
         <a class="btn" href="#contact">Give</a>
       </div>
     </div>
   </section>
-  <div style="height:40px"></div>
 </div>
 
 <!-- ============ PARTNERS ============ -->
 <div class="page" id="partners">
-  <div class="wrap pagehead"><div class="stack">
+  <div class="bg-cream"><div class="wrap pagehead"><div class="stack">
     <span class="eyebrow">Partners</span>
     <h1>We do this <span class="hl">together</span>.</h1>
-    <p class="lead">Schools open their doors, community groups spread the word, and funders keep every seat free.</p>
-  </div></div>
+    <p class="lead">The people who help open doors, spread the word and keep every seat free.</p>
+  </div></div></div>
 
-  <section class="tight">
-    <div class="wrap stack" style="gap:20px">
+  <section class="bg-white">
+    <div class="wrap stack" style="gap:24px">
       <h2>Our partners</h2>
       <div class="grid3">
-        <div class="card"><div class="avatar">N</div><h3>Nandha</h3><span class="role">Partner</span><p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p></div>
-        <div class="card"><div class="avatar">D</div><h3>Dheeraj</h3><span class="role">Partner</span><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p></div>
-        <div class="card"><div class="avatar">S</div><h3>Sanchaya</h3><span class="role">Partner</span><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p></div>
-        <div class="card"><div class="avatar">T</div><h3>Tuvi</h3><span class="role">Partner</span><p class="filler">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p></div>
-        <div class="card"><div class="avatar">M</div><h3>Mrithyunjay</h3><span class="role">Partner</span><p class="filler">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.</p></div>
+        <div class="card person"><div class="portrait lg"><svg aria-hidden="true"><use href="#silhouette"/></svg><span class="tag">Photo / logo</span></div><h3>Nandha</h3><span class="role">Partner</span><p class="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p></div>
+        <div class="card person"><div class="portrait lg"><svg aria-hidden="true"><use href="#silhouette"/></svg><span class="tag">Photo / logo</span></div><h3>Dheeraj</h3><span class="role">Partner</span><p class="filler">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p></div>
+        <div class="card person"><div class="portrait lg"><svg aria-hidden="true"><use href="#silhouette"/></svg><span class="tag">Photo / logo</span></div><h3>Sanchaya</h3><span class="role">Partner</span><p class="filler">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.</p></div>
+        <div class="card person"><div class="portrait lg"><svg aria-hidden="true"><use href="#silhouette"/></svg><span class="tag">Photo / logo</span></div><h3>Tuvi</h3><span class="role">Partner</span><p class="filler">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p></div>
+        <div class="card person"><div class="portrait lg"><svg aria-hidden="true"><use href="#silhouette"/></svg><span class="tag">Photo / logo</span></div><h3>Mrithyunjay</h3><span class="role">Partner</span><p class="filler">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.</p></div>
       </div>
     </div>
   </section>
-  <section>
+  <section class="bg-sage">
     <div class="wrap"><div class="card" style="padding:32px">
       <div class="cta-band">
         <div class="stack" style="gap:8px"><h2>Partner with us</h2><p>If your school, organization or company wants first-generation students to choose college with open eyes, we would like to hear from you.</p></div>
-        <a class="btn" href="#contact" style="background:var(--brand);color:var(--on-brand)">Start a conversation</a>
+        <a class="btn" href="#contact">Start a conversation</a>
       </div>
     </div></div>
   </section>
@@ -440,15 +572,49 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
 
 <!-- ============ CONTACT ============ -->
 <div class="page" id="contact">
-  <div class="wrap pagehead"><div class="stack">
+  <div class="bg-cream"><div class="wrap pagehead"><div class="stack">
     <span class="eyebrow">Location &amp; contact</span>
     <h1>Come <span class="hl">find us</span>.</h1>
-  </div></div>
+  </div></div></div>
 
-  <section class="tight">
+  <section class="bg-white">
     <div class="wrap split">
       <div class="stack" style="gap:28px">
-        <div class="map"><span>Map placeholder: 123 Lorem Street</span></div>
+        <!-- Stylized neighborhood map. On your live site you can swap this for a Google Maps embed:
+             <iframe src="https://www.google.com/maps/embed?pb=YOUR_EMBED_CODE" width="100%" height="320" style="border:0;filter:grayscale(1) contrast(.9)" loading="lazy"></iframe> -->
+        <div class="map" role="img" aria-label="Illustrated map of our neighborhood with our office marked">
+          <svg viewBox="0 0 600 340">
+            <path class="river" d="M-20 300 C120 250 180 320 300 280 S480 220 620 250"/>
+            <rect class="park" x="380" y="40" width="150" height="100" rx="10"/>
+            <text class="lbl" x="400" y="96">CITY PARK</text>
+            <g class="road" stroke-width="16">
+              <line x1="0" y1="160" x2="600" y2="160"/>
+              <line x1="140" y1="0" x2="140" y2="340"/>
+              <line x1="350" y1="0" x2="350" y2="260"/>
+            </g>
+            <g class="road" stroke-width="7">
+              <line x1="0" y1="80" x2="340" y2="80"/>
+              <line x1="240" y1="0" x2="240" y2="270"/>
+              <line x1="360" y1="215" x2="600" y2="215"/>
+              <line x1="60" y1="0" x2="60" y2="250"/>
+            </g>
+            <g class="blk">
+              <rect x="72" y="92" width="56" height="56" rx="5"/><rect x="152" y="92" width="76" height="56" rx="5"/><rect x="252" y="92" width="86" height="56" rx="5"/>
+              <rect x="72" y="14" width="56" height="54" rx="5"/><rect x="152" y="14" width="76" height="54" rx="5"/><rect x="252" y="14" width="86" height="54" rx="5"/>
+              <rect x="72" y="172" width="56" height="60" rx="5"/><rect x="152" y="172" width="76" height="60" rx="5"/><rect x="252" y="172" width="86" height="60" rx="5"/>
+              <rect x="372" y="172" width="70" height="32" rx="5"/><rect x="456" y="172" width="70" height="32" rx="5"/><rect x="540" y="172" width="60" height="32" rx="5"/>
+              <rect x="545" y="40" width="55" height="100" rx="5"/>
+            </g>
+            <text class="lbl" x="400" y="156" dy="-2">LOREM AVE</text>
+            <text class="lbl" x="148" y="300" transform="rotate(-90 148 300)">MAIN ST</text>
+            <g transform="translate(190 120)">
+              <rect class="tagbg" x="-78" y="-74" width="156" height="28" rx="6"/>
+              <text class="tagtx" x="0" y="-55" text-anchor="middle">Finance Forward</text>
+              <path class="pin" d="M0 0 C-14 -18 -16 -24 -16 -30 a16 16 0 0 1 32 0 c0 6 -2 12 -16 30z"/>
+              <circle class="pinc" cx="0" cy="-30" r="6"/>
+            </g>
+          </svg>
+        </div>
         <dl>
           <dt>Address</dt><dd>123 Lorem Street, Suite 000<br>City, ST 00000</dd>
           <dt>Email</dt><dd><a href="mailto:hello@example.org">hello@example.org</a></dd>
@@ -473,16 +639,15 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
       </div>
     </div>
   </section>
-  <div style="height:40px"></div>
 </div>
 
 </main>
 
 <footer>
   <div class="wrap foot">
-    <div class="stack" style="gap:8px">
+    <div>
       <strong>Finance Forward</strong>
-      <span>Free financial guidance for first-generation college students.</span>
+      <span>Free financial guidance for first-generation college students.</span><br>
       <span>A 501(c)(3) nonprofit organization. EIN 00-0000000.</span>
     </div>
     <div><strong>Explore</strong>
@@ -494,9 +659,43 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
   </div>
 </footer>
 
+<button class="ask-fab" id="ask-fab" type="button" hidden aria-controls="ask-panel" aria-expanded="false"><span class="dot">FF</span>Ask a question</button>
+<section class="ask-panel" id="ask-panel" hidden aria-label="Ask Finance Forward">
+  <div class="ask-head">
+    <div><strong>Ask Finance Forward</strong><small>Answers come from what's on this site</small></div>
+    <button class="ask-x" id="ask-close" type="button" aria-label="Close assistant">×</button>
+  </div>
+  <div class="ask-log" id="ask-log" aria-live="polite"></div>
+  <div class="ask-sugg" id="ask-sugg">
+    <button type="button">Is it really free?</button>
+    <button type="button">What happens in the workshops?</button>
+    <button type="button">How can I volunteer?</button>
+    <button type="button">Who are your partners?</button>
+  </div>
+  <form class="ask-form" id="ask-form">
+    <label for="ask-input" class="sr" style="position:absolute;left:-9999px">Your question</label>
+    <input id="ask-input" autocomplete="off" placeholder="Ask about our programs…" maxlength="500">
+    <button class="btn" id="ask-send" type="submit">Send</button>
+  </form>
+  <div class="ask-note">AI assistant. For anything important, contact us directly.</div>
+</section>
+
 <script>
 (function(){
   var pages=['home','story','team','pathways','partners','contact'];
+  var tl=document.getElementById('timeline');
+
+  function updateTimeline(){
+    if(!tl||!tl.offsetParent)return;
+    var r=tl.getBoundingClientRect();
+    var reach=window.innerHeight*0.65-r.top;           // how far the "reading line" has travelled into the list
+    var fill=Math.max(0,Math.min(r.height-20,reach));
+    tl.style.setProperty('--fill',fill+'px');
+    tl.querySelectorAll('li').forEach(function(li){
+      li.classList.toggle('lit',li.offsetTop+28<=fill+10);
+    });
+  }
+
   function route(){
     var h=(location.hash||'').replace('#','');
     if(pages.indexOf(h)<0)h='home';
@@ -505,9 +704,119 @@ footer{border-top:1px solid var(--line);padding:40px 0;font-size:.92rem;color:va
       if(a.getAttribute('href')==='#'+h)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
     });
     window.scrollTo(0,0);
+    requestAnimationFrame(updateTimeline);
   }
   window.addEventListener('hashchange',route);
+  window.addEventListener('scroll',updateTimeline,{passive:true});
+  window.addEventListener('resize',updateTimeline);
   route();
+
+  /* ---------- Ask Finance Forward ---------- */
+  var fab=document.getElementById('ask-fab'),panel=document.getElementById('ask-panel'),
+      log=document.getElementById('ask-log'),form=document.getElementById('ask-form'),
+      input=document.getElementById('ask-input'),send=document.getElementById('ask-send'),
+      sugg=document.getElementById('ask-sugg');
+  var history=[],busy=false,sample=null;
+
+  // Gather every page's visible text, so the assistant knows the whole site
+  function siteText(){
+    return pages.map(function(p){
+      var el=document.getElementById(p);
+      var clone=el.cloneNode(true);
+      clone.querySelectorAll('svg,script,style,form').forEach(function(n){n.remove()});
+      var t=(clone.textContent||'').replace(/[ \t]+/g,' ').replace(/\n\s*\n+/g,'\n').trim();
+      return '=== PAGE: '+p.toUpperCase()+' (link #'+p+') ===\n'+t;
+    }).join('\n\n')+'\n\n=== FOOTER ===\n'+document.querySelector('footer').textContent.replace(/\s+/g,' ').trim();
+  }
+
+  function instructions(){
+    return 'You are the friendly website assistant for Finance Forward, a nonprofit that teaches first-generation college students and their families how to make smart financial decisions about college.\n\n'+
+      'RULES:\n'+
+      '- Answer ONLY from the website content below. Do not invent programs, dates, prices, people, numbers or contact details.\n'+
+      '- Parts of the site are still placeholders: Latin "lorem ipsum" text, "Full Name", "20XX", "0,000", "$0.0M", "123 Lorem Street", "hello@example.org", "(000) 000-0000". Treat these as NOT YET AVAILABLE. Never repeat them as facts; say that detail has not been posted yet and suggest the Contact page.\n'+
+      '- If the answer is not on the site, say so plainly and point the person to the Contact page (#contact).\n'+
+      '- You may explain general financial-aid terms (grant, loan, work-study, FAFSA, net price) in simple words, but say when you are giving general information rather than something from the site, and never give personal financial or legal advice.\n'+
+      '- When useful, name the page where they can read more (Home, Our Story, Team, Pathways, Partners, Contact).\n'+
+      '- Be warm, brief (2 to 5 short sentences), and use plain language suited to a high-school senior or a parent. Plain text only, no markdown.\n\n'+
+      'WEBSITE CONTENT:\n'+siteText();
+  }
+
+  function add(cls,text){
+    var d=document.createElement('div');d.className='msg '+cls;d.textContent=text;log.appendChild(d);log.scrollTop=log.scrollHeight;return d;
+  }
+
+  function open(){
+    panel.hidden=false;fab.hidden=true;fab.setAttribute('aria-expanded','true');
+    if(!log.children.length)add('bot','Hi! I can answer questions about Finance Forward: our workshops, pathways, story, team and how to get in touch. What would you like to know?');
+    input.focus();
+  }
+  function close(){panel.hidden=true;fab.hidden=false;fab.setAttribute('aria-expanded','false');fab.focus()}
+
+  // Two ways to answer:
+  //  'claude': inside the claude.ai preview, using Claude's built-in AI
+  //  'gemini': on your live site, via the Netlify function at /.netlify/functions/ask (your Gemini key stays on the server)
+  var mode=null,geminiHistory=[];
+
+  function fail(bubble,msg){bubble.classList.remove('wait');bubble.classList.add('err');bubble.textContent=msg}
+
+  function askClaude(q,bubble){
+    // The first user turn carries the instructions and site content; later turns are just the questions
+    var msgs=history.length?history.concat([{role:'user',content:q}])
+                           :[{role:'user',content:instructions()+'\n\nVISITOR QUESTION: '+q}];
+    return sample(msgs,{
+      cache:false,modelTier:'quick',
+      onText:function(e){bubble.classList.remove('wait');bubble.textContent=e.text;log.scrollTop=log.scrollHeight}
+    }).then(function(res){
+      var a=(res&&res.text)||bubble.textContent;
+      bubble.classList.remove('wait');bubble.textContent=a;
+      history=msgs.concat([{role:'assistant',content:a}]);
+      if(history.length>16)history=[history[0],history[1]].concat(history.slice(-12)); // keep the site content plus recent turns
+    }).catch(function(err){
+      if(err&&err.code==='not_granted')fail(bubble,'The assistant isn\'t available right now. You can reach us through the Contact page.');
+      else if(err&&err.code==='rate_limited')fail(bubble,'Lots of questions right now. Please try again in a minute.');
+      else fail(bubble,'Sorry, something went wrong. Please try again, or use the Contact page.');
+    });
+  }
+
+  function askGemini(q,bubble){
+    return fetch('/.netlify/functions/ask',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({question:q,history:geminiHistory.slice(-10),site:siteText()})
+    }).then(function(r){
+      return r.json().catch(function(){return {}}).then(function(d){
+        if(!r.ok||!d.answer){
+          fail(bubble,r.status===429?'Lots of questions right now. Please try again in a minute.':'Sorry, the assistant couldn\'t answer just now. Please try again, or use the Contact page.');
+          return;
+        }
+        bubble.classList.remove('wait');bubble.textContent=d.answer;log.scrollTop=log.scrollHeight;
+        geminiHistory.push({role:'user',content:q},{role:'assistant',content:d.answer});
+      });
+    }).catch(function(){fail(bubble,'Sorry, the assistant couldn\'t be reached. Please try again, or use the Contact page.')});
+  }
+
+  function ask(q){
+    q=(q||'').trim();
+    if(!q||busy||!mode)return;
+    busy=true;send.disabled=true;sugg.hidden=true;input.value='';
+    add('me',q);
+    var bubble=add('bot wait','Thinking…');
+    (mode==='claude'?askClaude(q,bubble):askGemini(q,bubble))
+      .then(function(){busy=false;send.disabled=false;input.focus()});
+  }
+
+  fab.addEventListener('click',open);
+  document.getElementById('ask-close').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden)close()});
+  form.addEventListener('submit',function(e){e.preventDefault();ask(input.value)});
+  sugg.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){ask(b.textContent)})});
+
+  // Pick the backend: Claude inside the claude.ai preview, the Gemini function everywhere else
+  if(window.claude&&window.claude.use){
+    window.claude.use('sample').then(function(s){if(s){sample=s;mode='claude';fab.hidden=false}}).catch(function(){});
+  }else{
+    mode='gemini';fab.hidden=false;
+  }
+
   document.getElementById('contact-form').addEventListener('submit',function(e){
     e.preventDefault();
     document.getElementById('cf-status').textContent='This form is not connected to an inbox yet. Email hello@example.org for now.';
