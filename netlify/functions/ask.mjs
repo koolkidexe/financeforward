@@ -20,11 +20,40 @@ const json = (status, body) =>
 
 const clip = (s, n) => String(s || "").slice(0, n);
 
-export default async (req) => {
-  if (req.method !== "POST") return json(405, { error: "Use POST" });
+async function callGemini(key, body) {
+  const r = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+      body: JSON.stringify(body),
+    }
+  );
+  const data = await r.json().catch(() => ({}));
+  return { r, data };
+}
 
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) return json(500, { error: "GEMINI_API_KEY is not set in Netlify" });
+export default async (req) => {
+  const key = (process.env.GEMINI_API_KEY || "").trim();
+
+  // Self-test: open https://YOUR-SITE/.netlify/functions/ask in a browser.
+  // It never shows the key itself, only whether it is set and whether Gemini accepts it.
+  if (req.method === "GET") {
+    const report = { functionDeployed: true, keySet: !!key, keyLooksRight: key.startsWith("AIza"), model: MODEL };
+    if (!key) return json(200, { ...report, problem: "GEMINI_API_KEY is not set in Netlify, or the site was not redeployed after adding it." });
+    try {
+      const { r, data } = await callGemini(key, { contents: [{ role: "user", parts: [{ text: "Reply with the word OK." }] }] });
+      report.geminiStatus = r.status;
+      if (r.ok) report.result = "Gemini answered. The assistant should work.";
+      else report.problem = data?.error?.message || "Gemini rejected the request.";
+    } catch (e) {
+      report.problem = "Could not reach Gemini: " + e.message;
+    }
+    return json(200, report);
+  }
+
+  if (req.method !== "POST") return json(405, { error: "Use POST" });
+  if (!key) return json(500, { error: "GEMINI_API_KEY is not set in Netlify", code: "no_key" });
 
   let body;
   try { body = await req.json(); } catch { return json(400, { error: "Bad JSON" }); }
@@ -40,29 +69,21 @@ export default async (req) => {
   contents.push({ role: "user", parts: [{ text: question }] });
 
   try {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: `${RULES}\n\nWEBSITE CONTENT:\n${site}` }] },
-          contents,
-          generationConfig: { temperature: 0.3, maxOutputTokens: 1024 },
-        }),
-      }
-    );
-    const data = await r.json().catch(() => ({}));
+    const { r, data } = await callGemini(key, {
+      system_instruction: { parts: [{ text: `${RULES}\n\nWEBSITE CONTENT:\n${site}` }] },
+      contents,
+      generationConfig: { temperature: 0.3, maxOutputTokens: 1024 },
+    });
     if (!r.ok) {
       console.error("Gemini error", r.status, JSON.stringify(data).slice(0, 500));
-      return json(r.status === 429 ? 429 : 502, { error: "Gemini request failed" });
+      return json(r.status === 429 ? 429 : 502, { error: "Gemini request failed", code: "gemini_" + r.status });
     }
     const parts = data?.candidates?.[0]?.content?.parts || [];
     const answer = parts.filter((p) => p.text && !p.thought).map((p) => p.text).join("").trim();
-    if (!answer) return json(502, { error: "Empty answer" });
+    if (!answer) return json(502, { error: "Empty answer", code: "empty" });
     return json(200, { answer });
   } catch (e) {
     console.error(e);
-    return json(502, { error: "Could not reach Gemini" });
+    return json(502, { error: "Could not reach Gemini", code: "unreachable" });
   }
 };

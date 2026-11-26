@@ -941,7 +941,8 @@ footer{background:var(--navy);padding:56px 0;font-size:14px;color:#aeb8d4}
     }).then(function(r){
       return r.json().catch(function(){return {}}).then(function(d){
         if(!r.ok||!d.answer){
-          fail(bubble,r.status===429?'Lots of questions right now. Please try again in a minute.':'The assistant could not answer just now. Please try again, or use the Contact page.');
+          var code=d.code||(r.status===404?'not_deployed':'http_'+r.status);
+          fail(bubble,r.status===429?'Lots of questions right now. Please try again in a minute.':'The assistant could not answer just now. Please try again, or use the Contact page. (Error: '+code+')');
           return;
         }
         bubble.classList.remove('wait');bubble.textContent=d.answer;log.scrollTop=log.scrollHeight;
